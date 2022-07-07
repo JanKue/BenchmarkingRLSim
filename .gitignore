@@ -1,0 +1,13 @@
+/panda_pybullet_mujoco/**
+__pycache__/**
+.idea/**
+MUJOCO_LOG.TXT
+/controllers/__pycache__/**
+**.pyc
+.idea
+.vscode
+*_tmp_*.xml
+
+**/wandb/
+.DS_Store
+*.pkl
