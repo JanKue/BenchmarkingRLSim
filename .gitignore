@@ -11,3 +11,5 @@ MUJOCO_LOG.TXT
 **/wandb/
 .DS_Store
 *.pkl
+
+*.zip
