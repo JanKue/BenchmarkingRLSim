@@ -1,5 +1,5 @@
 import time
-
+import random
 import numpy as np
 
 from alr_sim.gyms.gym_controllers import GymCartesianVelController, GymTorqueController
@@ -10,7 +10,6 @@ from alr_sim.core.logger import RobotPlotFlags
 
 from custom_reach_env import CustomReachEnv
 
-import random
 
 
 if __name__ == "__main__":
@@ -31,7 +30,6 @@ if __name__ == "__main__":
 
     env.start()
 
-    env.seed(10)
     scene.start_logging()
     for i in range(20):
         action = ctrl.action_space().sample()

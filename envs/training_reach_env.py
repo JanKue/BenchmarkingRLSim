@@ -1,19 +1,10 @@
 import numpy as np
-import random
-from collections import namedtuple, deque
 
 from stable_baselines3 import A2C
 from stable_baselines3.common.env_checker import check_env
 
-import torch
-import torch.nn as nn
-import torch.optim as optim
-import torch.nn.functional as F
-# import torchvision.transforms as T
-
 from alr_sim.gyms.gym_controllers import GymCartesianVelController, GymTorqueController
 from alr_sim.sims.SimFactory import SimRepository
-from envs.reach_env.reach import ReachEnv
 
 from envs.custom_reach_env import CustomReachEnv
 
@@ -40,15 +31,14 @@ if __name__ == "__main__":
     env = CustomReachEnv(scene=scene, robot=robot, controller=ctrl, max_steps=200)
 
     env.start()
-    env.seed(1)
     scene.start_logging()
 
     # create model
 
-    check_env(env)
+    # check_env(env)
 
     model = A2C("MlpPolicy", env, verbose=1)
-    model.learn(total_timesteps=100)
+    model.learn(total_timesteps=200)
     # model.save("a2c_reach_model")
 
     # run training

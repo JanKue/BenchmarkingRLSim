@@ -47,8 +47,6 @@ class CustomReachEnv(gym.Env):
 
         observation = np.concatenate([goal_position, robot_position, pos_difference, [distance]], dtype='float32')
 
-        print(self.observation_space)
-        print(observation)
         assert self.observation_space.contains(observation)
 
         return observation
