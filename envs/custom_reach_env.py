@@ -29,6 +29,7 @@ class CustomReachEnv(gym.Env):
             init_quat=[1, 0, 0, 0],
             rgba=[1, 0, 0, 1],
             static=True,
+            visual_only=True
         )
         self.scene.add_object(self.goal)
 
@@ -55,18 +56,18 @@ class CustomReachEnv(gym.Env):
         goal_position = self.scene.get_obj_pos(self.goal)
         robot_position = self.robot.current_c_pos
 
-        # reward per Yu et al. 2020
+        # reward function per Yu et al. 2020
         distance = np.linalg.norm(robot_position - goal_position)
-        reward = -1000 * np.exp((distance**2)/0.01)
+        reward = 1000 * np.exp((distance**2) / 0.01)
 
-        return reward
+        return -reward
 
     def _is_done(self):
         goal_position = self.scene.get_obj_pos(self.goal)
         robot_position = self.robot.current_c_pos
         distance = np.linalg.norm(robot_position - goal_position)
 
-        reached_goal = (distance <= 0.1)
+        reached_goal = (distance <= 0.05)
 
         if self.terminated or (self.step_counter > self.max_steps) or reached_goal:
             return True
