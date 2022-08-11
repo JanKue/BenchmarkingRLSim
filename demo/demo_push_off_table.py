@@ -1,5 +1,5 @@
 from alr_sim.sims.SimFactory import SimRepository
-from alr_sim.sims.universal_sim.PrimitiveObjects import Box
+from alr_sim.sims.universal_sim.PrimitiveObjects import Box, Cylinder
 
 if __name__ == '__main__':
 
@@ -10,6 +10,13 @@ if __name__ == '__main__':
         rgba=[0.1, 0.25, 0.3, 1],
     )
 
+    cylinder1 = Cylinder(
+        name="cylinder1",
+        init_pos=[0.6, -0.2, 0.50],
+        init_quat=[0, 1, 0, 0],
+        rgba=[0, 1, 0, 1],
+    )
+
     table = Box(
         name="table0",
         init_pos=[0.5, 0.0, 0.2],
@@ -18,7 +25,7 @@ if __name__ == '__main__':
         static=True,
     )
 
-    object_list = [box1, table]
+    object_list = [box1, table, cylinder1]
 
     sim_factory = SimRepository.get_factory("mujoco")
     scene = sim_factory.create_scene(object_list=object_list)

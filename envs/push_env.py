@@ -5,7 +5,7 @@ import numpy as np
 
 from alr_sim.gyms.gym_controllers import GymController
 from alr_sim.core import RobotBase, Scene
-from alr_sim.sims.universal_sim.PrimitiveObjects import Sphere, Cylinder
+from alr_sim.sims.universal_sim.PrimitiveObjects import Sphere, Cylinder, Box
 
 
 class PushEnv(gym.Env):
@@ -25,7 +25,7 @@ class PushEnv(gym.Env):
         self.goal = Sphere(
             name="goal",
             size=[0.01],
-            init_pos=[0.5, 0.8, 0.01],
+            init_pos=[0.5, 0.2, 0.01],
             init_quat=[1, 0, 0, 0],
             rgba=[1, 0, 0, 1],
             static=True,
@@ -33,11 +33,11 @@ class PushEnv(gym.Env):
         )
         self.scene.add_object(self.goal)
 
-        self.puck = Cylinder(
+        self.puck = Box(    # maybe should be cylinder
             name="puck",
             size=None,
-            init_pos=[0.5, -0.5, 0.1],
-            init_quat=[0, 0, 0, 0],
+            init_pos=[0.5, -0.2, 0.1],
+            init_quat=[0, 1, 0, 0],
             rgba=[0, 0, 1, 1],
             static=False,
             visual_only=False
