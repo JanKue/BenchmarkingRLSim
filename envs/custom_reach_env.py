@@ -36,7 +36,7 @@ class CustomReachEnv(gym.Env):
         self.scene.add_object(self.goal)
 
         self.goal_space = spaces.Box(low=np.array([0.2, -0.3, 0.1]), high=np.array([0.5, 0.3, 0.5]))
-        self.observation_space = spaces.Box(low=-100.0, high=100.0, shape=(9,))
+        self.observation_space = spaces.Box(low=-10.0, high=10.0, shape=(9,))
         # normalize action space
         self.ctrl_action_space = controller.action_space()
         self.norm_factors = self.ctrl_action_space.high * 2
@@ -94,6 +94,7 @@ class CustomReachEnv(gym.Env):
 
     def step(self, action):
 
+        # de-normalize action
         ctrl_action = action * 2 / self.norm_factors
 
         self.controller.set_action(ctrl_action)
