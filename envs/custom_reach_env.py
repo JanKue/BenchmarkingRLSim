@@ -67,8 +67,9 @@ class CustomReachEnv(gym.Env):
         return observation
 
     def _get_reward(self):
-        goal_position = self.scene.get_obj_pos(self.goal)
+        self.robot.receiveState()
         robot_position = self.robot.current_c_pos
+        goal_position = self.scene.get_obj_pos(self.goal)
 
         # reward function per Yu et al. 2020
         distance = np.linalg.norm(robot_position - goal_position)
@@ -81,7 +82,7 @@ class CustomReachEnv(gym.Env):
         robot_position = self.robot.current_c_pos
         distance = np.linalg.norm(robot_position - goal_position)
 
-        reached_goal = (distance <= 0.05)
+        reached_goal = (distance <= 0.05)   # success metric from Yu et al. 2020
 
         if self.terminated or (self.step_counter > self.max_steps) or reached_goal:
             return True

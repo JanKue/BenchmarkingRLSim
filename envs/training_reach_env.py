@@ -40,20 +40,20 @@ if __name__ == "__main__":
 
     model = SAC("MlpPolicy", env, verbose=1)
 
-    episodes = 10
-    episode_steps = 150
+    iterations = 10
+    iteration_steps = 100
 
-    for i in range(episodes):
+    for i in range(iterations):
         if random_env:
             # model = SAC.load("sac_reach_model_random")
             # print("Loaded random model.")
-            model.learn(total_timesteps=episode_steps)
+            model.learn(total_timesteps=iteration_steps)
             model.save("sac_reach_model_random")
             print("Saved random model.")
         else:
             # model = SAC.load("sac_reach_model_norandom")
             # print("Loaded static model.")
-            model.learn(total_timesteps=episode_steps)
+            model.learn(total_timesteps=iteration_steps)
             model.save("sac_reach_model_norandom")
             print("Saved static model.")
 
