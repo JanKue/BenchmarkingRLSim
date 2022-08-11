@@ -15,12 +15,14 @@ class CustomReachEnv(gym.Env):
                  scene: Scene,
                  robot: RobotBase,
                  controller: GymController,
-                 max_steps):
+                 max_steps,
+                 random_env=False):
 
         self.scene = scene
         self.robot = robot
         self.controller = controller
         self.max_steps = max_steps
+        self.random_env = random_env
 
         self.goal = Sphere(
             name="goal",
@@ -33,22 +35,34 @@ class CustomReachEnv(gym.Env):
         )
         self.scene.add_object(self.goal)
 
-        self.action_space = controller.action_space()
-        self.observation_space = spaces.Box(low=-20.0, high=20.0, shape=(10,))
+        self.goal_space = spaces.Box(low=np.array([0.2, -0.3, 0.1]), high=np.array([0.5, 0.3, 0.5]))
+        self.observation_space = spaces.Box(low=-100.0, high=100.0, shape=(9,))
+        # normalize action space
+        self.ctrl_action_space = controller.action_space()
+        self.norm_factors = self.ctrl_action_space.high * 2
+        self.norm_action_space = spaces.Box(low=-1.0, high=1.0, shape=self.ctrl_action_space.shape)
+        self.action_space = self.norm_action_space  # self.ctrl_action_space
 
         self.terminated = False
         self.step_counter = 0
         self.episode_counter = 0
 
     def _get_observation(self):
-        goal_position = self.scene.get_obj_pos(self.goal)
-        robot_position = self.robot.current_c_pos
-        pos_difference = robot_position - goal_position
-        distance = np.linalg.norm(pos_difference)
 
-        observation = np.concatenate([goal_position, robot_position, pos_difference, [distance]], dtype='float32')
+        # per Yu et al. 2020, observation should be 9-dimensional and contain cartesian positions
+        #  of end-effector, object (not applicable here), and goal
 
-        assert self.observation_space.contains(observation)
+        self.robot.receiveState()
+        tcp_pos = self.robot.current_c_pos  # end effector position
+        goal_position = self.scene.get_obj_pos(self.goal)   # goal position
+
+        observation = np.concatenate([tcp_pos, goal_position, goal_position], dtype='float32')
+
+        # assert self.observation_space.contains(observation)
+
+        if not self.observation_space.contains(observation):
+            print("Observation not in observation space!")
+            print(observation)
 
         return observation
 
@@ -79,7 +93,9 @@ class CustomReachEnv(gym.Env):
 
     def step(self, action):
 
-        self.controller.set_action(action)
+        ctrl_action = action * 2 / self.norm_factors
+
+        self.controller.set_action(ctrl_action)
         self.controller.execute_action(n_time_steps=500)
 
         self.step_counter += 1
@@ -94,9 +110,16 @@ class CustomReachEnv(gym.Env):
         self.terminated = False
         self.step_counter = 0
         self.episode_counter += 1
-        self.scene.reset()
+
+        if self.random_env:
+            new_goal = [self.goal, self.goal_space.sample()]
+            self.scene.reset([new_goal])
+        else:
+            self.scene.reset()
+
         return self._get_observation()
 
     def render(self):
+        self.scene.render()
         print(self._get_observation())
 

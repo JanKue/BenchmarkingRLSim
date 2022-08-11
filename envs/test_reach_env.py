@@ -10,6 +10,8 @@ from alr_sim.core.logger import RobotPlotFlags
 
 from custom_reach_env import CustomReachEnv
 
+import gym.spaces
+
 
 
 if __name__ == "__main__":
@@ -26,11 +28,12 @@ if __name__ == "__main__":
     # )
     # robot.cartesianPosQuatTrackingController.neglect_dynamics = False
     ctrl = GymTorqueController(robot)
-    env = CustomReachEnv(scene, robot, ctrl, max_steps=500)
+    env = CustomReachEnv(scene, robot, ctrl, max_steps=500, random_env=True)
 
     env.start()
 
     scene.start_logging()
+    env.reset()
     for i in range(200):
         action = ctrl.action_space().sample()
         print("action:", action)
@@ -38,6 +41,8 @@ if __name__ == "__main__":
         print("%d: Position " % (i), robot.current_c_pos)
         print("Latest step reward:", step_reward)
         print("observation: ", step_obs)
+        print("valid observation: ", env.observation_space.contains(step_obs))
+
         if step_done or (i + 1) % 50 == 0:
             print("reset!")
             env.reset()

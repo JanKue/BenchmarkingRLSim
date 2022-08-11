@@ -1,7 +1,8 @@
 import numpy as np
 
-from stable_baselines3 import A2C
+from stable_baselines3 import A2C, SAC
 from stable_baselines3.common.env_checker import check_env
+from stable_baselines3.common.vec_env import VecCheckNan
 
 from alr_sim.gyms.gym_controllers import GymCartesianVelController, GymTorqueController
 from alr_sim.sims.SimFactory import SimRepository
@@ -28,26 +29,42 @@ if __name__ == "__main__":
     # robot.cartesianPosQuatTrackingController.neglect_dynamics = False
 
     ctrl = GymTorqueController(robot)
-    env = CustomReachEnv(scene=scene, robot=robot, controller=ctrl, max_steps=200)
+
+    random_env = False
+    env = CustomReachEnv(scene=scene, robot=robot, controller=ctrl, max_steps=200, random_env=random_env)
 
     env.start()
     scene.start_logging()
 
-    # create model
-
     # check_env(env)
 
-    model = A2C("MlpPolicy", env, verbose=1)
-    model.learn(total_timesteps=200)
-    # model.save("a2c_reach_model")
+    model = SAC("MlpPolicy", env, verbose=1)
 
-    # run training
+    episodes = 10
+    episode_steps = 150
 
-    obs = env.reset()
-    while True:
-        action, _states = model.predict(obs)
-        obs, rewards, done, info = env.step(action)
-        print("action", action, "observation", obs, "reward", rewards)
-        if done:
-            obs = env.reset()
+    for i in range(episodes):
+        if random_env:
+            # model = SAC.load("sac_reach_model_random")
+            # print("Loaded random model.")
+            model.learn(total_timesteps=episode_steps)
+            model.save("sac_reach_model_random")
+            print("Saved random model.")
+        else:
+            # model = SAC.load("sac_reach_model_norandom")
+            # print("Loaded static model.")
+            model.learn(total_timesteps=episode_steps)
+            model.save("sac_reach_model_norandom")
+            print("Saved static model.")
 
+
+
+    #####
+
+    # obs = env.reset()
+    # while True:
+    #     action, _states = model.predict(obs)
+    #     obs, rewards, done, info = env.step(action)
+    #     print("action", action, "observation", obs, "reward", rewards)
+    #     if done:
+    #         obs = env.reset()
