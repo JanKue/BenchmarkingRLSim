@@ -1,15 +1,10 @@
-import numpy as np
-
-from stable_baselines3 import A2C, SAC
+from stable_baselines3 import SAC
 from stable_baselines3.common.env_checker import check_env
-from stable_baselines3.common.vec_env import VecCheckNan
 
 from alr_sim.gyms.gym_controllers import GymCartesianVelController, GymTorqueController
 from alr_sim.sims.SimFactory import SimRepository
 
 from envs.custom_reach_env import CustomReachEnv
-
-from alr_sim.core.logger import RobotPlotFlags
 
 if __name__ == "__main__":
 
@@ -30,41 +25,26 @@ if __name__ == "__main__":
 
     ctrl = GymTorqueController(robot)
 
-    random_env = False
-    env = CustomReachEnv(scene=scene, robot=robot, controller=ctrl, max_steps=200, random_env=random_env)
+    random_env = True
+    total_steps = 10000
+    env = CustomReachEnv(scene=scene, robot=robot, controller=ctrl, max_steps=1000, random_env=random_env)
+
+    random_path = "random" if random_env else "norandom"
+    file_path = "sac_reach_model_" + random_path
 
     env.start()
     scene.start_logging()
 
+    # print("begin checking env")
     # check_env(env)
+    # print("finished checking env")
 
-    model = SAC("MlpPolicy", env, verbose=1)
+    model = SAC("MlpPolicy", env=env, verbose=1)
 
-    iterations = 10
-    iteration_steps = 100
+    # model = SAC.load(path=file_path, env=env)
+    print("Loaded " + random_path + " model.")
 
-    for i in range(iterations):
-        if random_env:
-            # model = SAC.load("sac_reach_model_random")
-            # print("Loaded random model.")
-            model.learn(total_timesteps=iteration_steps)
-            model.save("sac_reach_model_random")
-            print("Saved random model.")
-        else:
-            # model = SAC.load("sac_reach_model_norandom")
-            # print("Loaded static model.")
-            model.learn(total_timesteps=iteration_steps)
-            model.save("sac_reach_model_norandom")
-            print("Saved static model.")
+    model.learn(total_timesteps=total_steps)
 
-
-
-    #####
-
-    # obs = env.reset()
-    # while True:
-    #     action, _states = model.predict(obs)
-    #     obs, rewards, done, info = env.step(action)
-    #     print("action", action, "observation", obs, "reward", rewards)
-    #     if done:
-    #         obs = env.reset()
+    model.save(file_path)
+    print("Saved " + random_path + " model.")
