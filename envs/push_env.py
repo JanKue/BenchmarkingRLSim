@@ -86,6 +86,9 @@ class PushEnv(gym.Env):
 
         reward = - robot_object_distance + indicator * exp_distance
 
+        if reward > np.finfo(np.float32).max:
+            reward = np.finfo(np.float32).max
+
         return -reward
 
     def _is_done(self):
