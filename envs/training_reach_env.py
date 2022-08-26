@@ -26,22 +26,23 @@ if __name__ == "__main__":
     ctrl = GymTorqueController(robot)
 
     random_env = True
-    total_steps = 10000
-    env = CustomReachEnv(scene=scene, robot=robot, controller=ctrl, max_steps=1000, random_env=random_env)
+    total_steps = 7500
+    env = CustomReachEnv(scene=scene, robot=robot, controller=ctrl, max_steps=1500, random_env=random_env)
 
     random_path = "random" if random_env else "norandom"
     file_path = "sac_reach_model_" + random_path
 
     env.start()
+    env.reset()
     scene.start_logging()
 
     # print("begin checking env")
     # check_env(env)
     # print("finished checking env")
 
-    model = SAC("MlpPolicy", env=env, verbose=1)
+    # model = SAC("MlpPolicy", env=env, verbose=1)
 
-    # model = SAC.load(path=file_path, env=env)
+    model = SAC.load(path=file_path, env=env)
     print("Loaded " + random_path + " model.")
 
     model.learn(total_timesteps=total_steps)
