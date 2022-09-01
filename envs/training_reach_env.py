@@ -1,5 +1,6 @@
 from stable_baselines3 import SAC
 from stable_baselines3.common.env_checker import check_env
+from stable_baselines3.common.logger import configure
 
 from alr_sim.gyms.gym_controllers import GymCartesianVelController, GymTorqueController
 from alr_sim.sims.SimFactory import SimRepository
@@ -26,8 +27,9 @@ if __name__ == "__main__":
     ctrl = GymTorqueController(robot)
 
     random_env = True
-    total_steps = 200000
+    total_steps = 4000
     env = CustomReachEnv(scene=scene, robot=robot, controller=ctrl, max_steps=200, random_env=random_env)
+    logger = configure("../tensorboard_log/", ["stdout", "tensorboard"])
 
     random_path = "random" if random_env else "norandom"
     file_path = "sac_reach_model_" + random_path
@@ -45,7 +47,8 @@ if __name__ == "__main__":
     model = SAC.load(path=file_path, env=env)
     print("Loaded " + random_path + " model.")
 
-    model.learn(total_timesteps=total_steps)
+    model.learn(total_timesteps=total_steps,
+                eval_env=env, eval_freq=100, tb_log_name="SAC_2022-09-01_01", eval_log_path="../evaluation/")
 
     model.save(file_path)
     print("Saved " + random_path + " model.")
