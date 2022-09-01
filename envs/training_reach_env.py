@@ -32,7 +32,7 @@ if __name__ == "__main__":
     logger = configure("../tensorboard_log/", ["stdout", "tensorboard"])
 
     random_path = "random" if random_env else "norandom"
-    file_path = "sac_reach_model_" + random_path
+    file_path = "../models/sac_reach_model_" + random_path
 
     env.start()
     env.reset()
