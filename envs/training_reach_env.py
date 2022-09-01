@@ -26,8 +26,8 @@ if __name__ == "__main__":
     ctrl = GymTorqueController(robot)
 
     random_env = True
-    total_steps = 7500
-    env = CustomReachEnv(scene=scene, robot=robot, controller=ctrl, max_steps=1500, random_env=random_env)
+    total_steps = 200000
+    env = CustomReachEnv(scene=scene, robot=robot, controller=ctrl, max_steps=200, random_env=random_env)
 
     random_path = "random" if random_env else "norandom"
     file_path = "sac_reach_model_" + random_path
