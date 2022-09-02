@@ -101,7 +101,7 @@ class CustomReachEnv(gym.Env):
         ctrl_action = action * 2 / self.norm_factors
 
         self.controller.set_action(ctrl_action)
-        self.controller.execute_action(n_time_steps=10)
+        self.controller.execute_action(n_time_steps=20)
 
         self.step_counter += 1
 
