@@ -27,7 +27,7 @@ if __name__ == "__main__":
     ctrl = GymTorqueController(robot)
 
     random_env = True
-    total_steps = 4000
+    total_steps = 40000
     env = CustomReachEnv(scene=scene, robot=robot, controller=ctrl, max_steps=200, random_env=random_env)
     logger = configure("../tensorboard_log/", ["stdout", "tensorboard"])
 
@@ -47,8 +47,10 @@ if __name__ == "__main__":
     model = SAC.load(path=file_path, env=env)
     print("Loaded " + random_path + " model.")
 
+    model.set_logger(logger)
+
     model.learn(total_timesteps=total_steps,
-                eval_env=env, eval_freq=100, tb_log_name="SAC_2022-09-01_01", eval_log_path="../evaluation/")
+                eval_env=env, eval_freq=2000, tb_log_name="SAC_" + random_path, eval_log_path="../evaluation/")
 
     model.save(file_path)
     print("Saved " + random_path + " model.")
