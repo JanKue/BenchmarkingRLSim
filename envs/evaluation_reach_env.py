@@ -17,10 +17,11 @@ if __name__ == "__main__":
     ctrl = GymTorqueController(robot)
 
     random_env = False
-    env = CustomReachEnv(scene=scene, robot=robot, controller=ctrl, max_steps=1000, random_env=random_env)
+    env = CustomReachEnv(scene=scene, robot=robot, controller=ctrl, max_steps=100, random_env=random_env)
 
     random_path = "random" if random_env else "norandom"
-    file_path = "sac_reach_model_" + random_path
+    # file_path = "../models/sac_reach_model_low_" + random_path
+    file_path = "../evaluation/best_model"
 
     env.start()
     scene.start_logging()
