@@ -73,7 +73,7 @@ class CustomReachEnv(gym.Env):
 
         # reward function per Yu et al. 2020
         distance = np.linalg.norm(robot_position - goal_position)
-        reward = 1000 * np.exp((distance**2) / 0.01, dtype=np.float32)
+        reward = np.exp((distance**2) / 0.1, dtype=np.float32)
 
         if reward > np.finfo(np.float32).max:
             reward = np.finfo(np.float32).max
@@ -101,7 +101,7 @@ class CustomReachEnv(gym.Env):
         ctrl_action = action * 2 / self.norm_factors
 
         self.controller.set_action(ctrl_action)
-        self.controller.execute_action(n_time_steps=10)
+        self.controller.execute_action(n_time_steps=20)
 
         self.step_counter += 1
 
