@@ -1,4 +1,4 @@
-from stable_baselines3 import SAC
+from stable_baselines3 import SAC, TD3, A2C
 
 from alr_sim.gyms.gym_controllers import GymTorqueController
 from alr_sim.sims.SimFactory import SimRepository
@@ -21,14 +21,14 @@ if __name__ == "__main__":
 
     random_path = "random" if random_env else "norandom"
     # file_path = "../models/sac_reach_model_low_" + random_path
-    file_path = "../evaluation/best_model"
+    file_path = "../evaluation/reach/best_model"
 
     env.start()
     scene.start_logging()
 
     # load trained model and run it
 
-    model = SAC.load(path=file_path, env=env)
+    model = A2C.load(path=file_path, env=env)
     print("Loaded " + random_path + " model.")
 
     obs = env.reset()

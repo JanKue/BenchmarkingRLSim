@@ -1,6 +1,6 @@
 from numpy import load
 
-data = load('evaluations.npz')
+data = load('reach/evaluations.npz')
 lst = data.files
 for item in lst:
     print(item)
