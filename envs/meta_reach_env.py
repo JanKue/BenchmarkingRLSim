@@ -36,7 +36,7 @@ class MetaReachEnv(gym.Env):
         self.scene.add_object(self.goal)
 
         self.goal_space = spaces.Box(low=np.array([0.2, -0.3, 0.1]), high=np.array([0.5, 0.3, 0.5]))
-        self.observation_space = spaces.Box(low=-10.0, high=10.0, shape=(9,), dtype=np.float64)
+        self.observation_space = spaces.Box(low=-10.0, high=10.0, shape=(16,), dtype=np.float64)
         # normalize action space
         self.ctrl_action_space = controller.action_space()
         self.norm_factors = self.ctrl_action_space.high * 2
@@ -55,10 +55,11 @@ class MetaReachEnv(gym.Env):
         #  of end-effector, object (not applicable here), and goal
 
         self.robot.receiveState()
+        joint_pos = self.robot.current_j_pos  # robot joints position
         tcp_pos = self.robot.current_c_pos  # end effector position
-        goal_position = self.scene.get_obj_pos(self.goal)   # goal position
+        goal_pos = self.scene.get_obj_pos(self.goal)   # goal position
 
-        observation = np.concatenate([tcp_pos, goal_position, goal_position])
+        observation = np.concatenate([joint_pos, tcp_pos, goal_pos, goal_pos])
 
         # assert self.observation_space.contains(observation)
 
