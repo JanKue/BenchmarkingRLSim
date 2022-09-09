@@ -47,6 +47,8 @@ class MetaReachEnv(gym.Env):
         self.step_counter = 0
         self.episode_counter = 0
 
+        self.current_action = 0
+
     def _get_observation(self):
 
         # per Yu et al. 2020, observation should be 9-dimensional and contain cartesian positions
@@ -73,7 +75,11 @@ class MetaReachEnv(gym.Env):
 
         # reward function per Yu et al. 2020
         distance = np.linalg.norm(robot_position - goal_position)
-        reward = np.exp((distance**2) / 0.1, dtype=np.float32)
+        reward = distance**2
+        # reward = np.exp((distance**2) / 0.1, dtype=np.float32)
+        penalty = 0.0001 * np.sum(self.current_action)
+
+        reward -= penalty
 
         if reward > np.finfo(np.float32).max:
             reward = np.finfo(np.float32).max
@@ -99,6 +105,8 @@ class MetaReachEnv(gym.Env):
 
         # de-normalize action
         ctrl_action = action * 2 / self.norm_factors
+
+        self.current_action = ctrl_action
 
         self.controller.set_action(ctrl_action)
         self.controller.execute_action(n_time_steps=20)
