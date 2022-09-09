@@ -8,7 +8,7 @@ from envs.reach_env.reach import ReachEnv
 
 from alr_sim.core.logger import RobotPlotFlags
 
-from custom_reach_env import CustomReachEnv
+from meta_reach_env import MetaReachEnv
 
 import gym.spaces
 
@@ -28,7 +28,7 @@ if __name__ == "__main__":
     # )
     # robot.cartesianPosQuatTrackingController.neglect_dynamics = False
     ctrl = GymTorqueController(robot)
-    env = CustomReachEnv(scene, robot, ctrl, max_steps=500, random_env=True)
+    env = MetaReachEnv(scene, robot, ctrl, max_steps=500, random_env=True)
 
     env.start()
 

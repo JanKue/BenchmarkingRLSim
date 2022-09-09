@@ -3,7 +3,7 @@ from stable_baselines3 import SAC, TD3, A2C
 from alr_sim.gyms.gym_controllers import GymTorqueController
 from alr_sim.sims.SimFactory import SimRepository
 
-from envs.custom_reach_env import CustomReachEnv
+from envs.meta_reach_env import MetaReachEnv
 
 if __name__ == "__main__":
 
@@ -17,7 +17,7 @@ if __name__ == "__main__":
     ctrl = GymTorqueController(robot)
 
     random_env = False
-    env = CustomReachEnv(scene=scene, robot=robot, controller=ctrl, max_steps=100, random_env=random_env)
+    env = MetaReachEnv(scene=scene, robot=robot, controller=ctrl, max_steps=100, random_env=random_env)
 
     random_path = "random" if random_env else "norandom"
     # file_path = "../models/sac_reach_model_low_" + random_path

@@ -7,7 +7,7 @@ from alr_sim.sims.SimFactory import SimRepository
 
 from alr_sim.core.logger import RobotPlotFlags
 
-from push_env import PushEnv
+from meta_push_env import MetaPushEnv
 
 import gym.spaces
 
@@ -27,7 +27,7 @@ if __name__ == "__main__":
     # )
     # robot.cartesianPosQuatTrackingController.neglect_dynamics = False
     ctrl = GymTorqueController(robot)
-    env = PushEnv(scene, robot, ctrl, max_steps=500, random_env=False)
+    env = MetaPushEnv(scene, robot, ctrl, max_steps=500, random_env=False)
 
     env.start()
 

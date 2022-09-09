@@ -6,14 +6,14 @@ from alr_sim.gyms.gym_controllers import GymCartesianVelController, GymTorqueCon
 from alr_sim.sims.SimFactory import SimRepository
 from alr_sim.core.Scene import Scene
 
-from envs.custom_reach_env import CustomReachEnv
+from envs.meta_reach_env import MetaReachEnv
 
 if __name__ == "__main__":
 
     # setup parameters
 
     random_env = False
-    total_steps = 200_000
+    total_steps = 1_000_000
     episode_steps = 100
 
     # create scene and environment
@@ -23,11 +23,11 @@ if __name__ == "__main__":
     scene = sim_factory.create_scene(render=Scene.RenderMode.BLIND)
     robot = sim_factory.create_robot(scene)
     ctrl = GymTorqueController(robot)
-    env = CustomReachEnv(scene=scene, robot=robot, controller=ctrl, max_steps=episode_steps, random_env=random_env)
+    env = MetaReachEnv(scene=scene, robot=robot, controller=ctrl, max_steps=episode_steps, random_env=random_env)
 
     logger = configure("../tensorboard_log/reach", ["stdout", "tensorboard"])
     random_path = "random" if random_env else "static"
-    file_path = "../models/a2c_reach_model_low_" + random_path
+    file_path = "../models/a2c_reach_model_" + random_path
 
     env.start()
     env.reset()
@@ -37,9 +37,9 @@ if __name__ == "__main__":
     # check_env(env)
     # print("finished checking env")
 
-    # model = A2C("MlpPolicy", env=env, verbose=1)
+    model = A2C("MlpPolicy", env=env, verbose=1)
 
-    model = A2C.load(path=file_path, env=env)
+    # model = A2C.load(path=file_path, env=env)
     print("Loaded " + random_path + " model.")
 
     model.set_logger(logger)

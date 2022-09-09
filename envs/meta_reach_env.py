@@ -9,7 +9,7 @@ from alr_sim.core import RobotBase, Scene
 from alr_sim.sims.universal_sim.PrimitiveObjects import Sphere
 
 
-class CustomReachEnv(gym.Env):
+class MetaReachEnv(gym.Env):
 
     def __init__(self,
                  scene: Scene,
