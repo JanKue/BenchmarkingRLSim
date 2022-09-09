@@ -4,7 +4,6 @@ import numpy as np
 
 from alr_sim.gyms.gym_controllers import GymCartesianVelController, GymTorqueController
 from alr_sim.sims.SimFactory import SimRepository
-from envs.reach_env.reach import ReachEnv
 
 from alr_sim.core.logger import RobotPlotFlags
 
@@ -48,8 +47,3 @@ if __name__ == "__main__":
             env.reset()
 
     scene.stop_logging()
-    robot.robot_logger.plot(
-        plot_selection=RobotPlotFlags.JOINTS
-        | RobotPlotFlags.END_EFFECTOR
-        | RobotPlotFlags.MISC
-    )
