@@ -27,7 +27,7 @@ if __name__ == "__main__":
 
     logger = configure("../tensorboard_log/reach", ["stdout", "tensorboard"])
     random_path = "random" if random_env else "static"
-    file_path = "../models/a2c_reach_model_" + random_path
+    file_path = "../models/sac_reach_noexp_model_" + random_path
 
     env.start()
     env.reset()
@@ -37,9 +37,9 @@ if __name__ == "__main__":
     # check_env(env)
     # print("finished checking env")
 
-    model = A2C("MlpPolicy", env=env, verbose=1)
+    model = SAC("MlpPolicy", env=env, verbose=1, ent_coef=0.1, learning_starts=100)
 
-    # model = A2C.load(path=file_path, env=env)
+    # model = SAC.load(path=file_path, env=env)
     print("Loaded " + random_path + " model.")
 
     model.set_logger(logger)
