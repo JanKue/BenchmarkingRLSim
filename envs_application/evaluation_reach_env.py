@@ -28,7 +28,7 @@ if __name__ == "__main__":
 
     # load trained model and run it
 
-    model = A2C.load(path=file_path, env=env)
+    model = SAC.load(path=file_path, env=env)
     print("Loaded " + random_path + " model.")
 
     obs = env.reset()

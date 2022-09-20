@@ -13,7 +13,7 @@ if __name__ == "__main__":
     # setup parameters
 
     random_env = False
-    total_steps = 1_000_000
+    total_steps = 200_000
     episode_steps = 100
 
     # create scene and environment
@@ -27,7 +27,7 @@ if __name__ == "__main__":
 
     logger = configure("../tensorboard_log/reach", ["stdout", "tensorboard"])
     random_path = "random" if random_env else "static"
-    file_path = "../models/sac_reach_noexp_model_" + random_path
+    file_path = "../models/sac_reach_noexp_ctrlaction_model_" + random_path
 
     env.start()
     env.reset()
@@ -39,7 +39,7 @@ if __name__ == "__main__":
 
     model = SAC("MlpPolicy", env=env, verbose=1, ent_coef=0.1, learning_starts=100)
 
-    # model = SAC.load(path=file_path, env=env)
+    # model = SAC.load(path=file_path, env=env, force_reset=True)
     print("Loaded " + random_path + " model.")
 
     model.set_logger(logger)
