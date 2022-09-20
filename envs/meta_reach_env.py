@@ -36,18 +36,18 @@ class MetaReachEnv(gym.Env):
         self.scene.add_object(self.goal)
 
         self.goal_space = spaces.Box(low=np.array([0.2, -0.3, 0.1]), high=np.array([0.5, 0.3, 0.5]))
-        self.observation_space = spaces.Box(low=-10.0, high=10.0, shape=(16,), dtype=np.float64)
+        self.observation_space = spaces.Box(low=-10.0, high=10.0, shape=(9,), dtype=np.float64)
         # normalize action space
         self.ctrl_action_space = controller.action_space()
         self.norm_factors = self.ctrl_action_space.high * 2
         self.norm_action_space = spaces.Box(low=-1.0, high=1.0, shape=self.ctrl_action_space.shape)
-        self.action_space = self.norm_action_space  # self.ctrl_action_space
+        self.action_space = self.ctrl_action_space  # self.norm_action_space
 
         self.terminated = False
         self.step_counter = 0
         self.episode_counter = 0
 
-        self.current_action = 0
+        self.current_action = []
 
     def _get_observation(self):
 
@@ -55,11 +55,11 @@ class MetaReachEnv(gym.Env):
         #  of end-effector, object (not applicable here), and goal
 
         self.robot.receiveState()
-        joint_pos = self.robot.current_j_pos  # robot joints position
+        joint_pos = self.robot.current_j_pos  # robot joints position (optional)
         tcp_pos = self.robot.current_c_pos  # end effector position
         goal_pos = self.scene.get_obj_pos(self.goal)   # goal position
 
-        observation = np.concatenate([joint_pos, tcp_pos, goal_pos, goal_pos])
+        observation = np.concatenate([tcp_pos, goal_pos, goal_pos])
 
         # assert self.observation_space.contains(observation)
 
@@ -80,7 +80,7 @@ class MetaReachEnv(gym.Env):
         # reward = np.exp((distance**2) / 0.1, dtype=np.float32)
         penalty = 0.0001 * np.sum(self.current_action)
 
-        reward -= penalty
+        reward += penalty
 
         if reward > np.finfo(np.float32).max:
             reward = np.finfo(np.float32).max
@@ -106,6 +106,7 @@ class MetaReachEnv(gym.Env):
 
         # de-normalize action
         ctrl_action = action * 2 / self.norm_factors
+        ctrl_action = action
 
         self.current_action = ctrl_action
 
