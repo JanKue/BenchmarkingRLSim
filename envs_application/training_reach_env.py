@@ -22,6 +22,7 @@ if __name__ == "__main__":
 
     scene = sim_factory.create_scene(render=Scene.RenderMode.BLIND)
     robot = sim_factory.create_robot(scene)
+    robot.gravity_comp = False
     ctrl = GymTorqueController(robot)
     env = MetaReachEnv(scene=scene, robot=robot, controller=ctrl, max_steps=episode_steps, random_env=random_env)
 
