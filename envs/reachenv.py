@@ -47,7 +47,7 @@ class ReachEnv(GymEnvWrapper):
         )
         self.scene.add_object(self.goal)
 
-        self.target_min_dist = 0.02
+        self.target_min_dist = 0.05
 
         self.init_pos_space = SamplingSpace(
             low=np.array([0.5, 0, 0.65]), high=np.array([0.6, 0, 0.75])
@@ -74,7 +74,7 @@ class ReachEnv(GymEnvWrapper):
         tcp = self.robot.current_c_pos
         target = self.scene.get_obj_pos(self.goal)
 
-        reward = -np.linalg.norm(tcp - target)
+        reward = -np.exp(np.linalg.norm(tcp - target)**2)
 
         return reward
 
