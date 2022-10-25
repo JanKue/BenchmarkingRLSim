@@ -1,5 +1,6 @@
 from alr_sim.sims.SimFactory import SimRepository
 import alr_sim.sims.universal_sim.PrimitiveObjects as PrimObj
+from objects.hammer import Hammer
 
 if __name__ == '__main__':
 
@@ -32,10 +33,16 @@ if __name__ == '__main__':
         static=True,
     )
 
-    object_list = [table, box1, sphere1, cylinder1]
+    hammer = Hammer(
+        name="hammer0",
+        init_pos=[0.0, 0.0, 0.0],
+        init_quat=[0.0, 0.0, 0.0, 0.0]
+    )
+
+    object_list = [table]
 
     sim_factory = SimRepository.get_factory("mujoco")
-    scene = sim_factory.create_scene(object_list=object_list)
+    scene = sim_factory.create_scene(object_list=object_list, random_env=True)
     robot = sim_factory.create_robot(scene)
     scene.start()
     duration = 4
@@ -52,3 +59,4 @@ if __name__ == '__main__':
     )
 
     robot.gotoCartPositionAndQuat(init_pos, init_or, duration=duration)
+
