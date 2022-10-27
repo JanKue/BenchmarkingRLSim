@@ -14,7 +14,7 @@ class ReachEnv(GymEnvWrapper):
         simulator: str,
         n_substeps: int = 10,
         max_steps_per_episode: int = 250,
-        debug: bool = False,
+        debug: bool = True,
         random_goal: bool = False,
         random_init: bool = False,
         render=False
@@ -112,4 +112,11 @@ class ReachEnv(GymEnvWrapper):
         self.episode += 1
         self._reset_env()
         return self.get_observation()
+
+    def debug_msg(self) -> dict:
+        goal_pos = self.scene.get_obj_pos(self.goal)
+        tcp_pos = self.robot.current_c_pos
+        dist_tcp_goal, _ = obj_distance(goal_pos, tcp_pos)
+        success = dist_tcp_goal <= self.target_min_dist
+        return {"is_success": success}
 
