@@ -1,6 +1,7 @@
 import numpy as np
 from alr_sim.core import RobotPlotFlags, RobotLogger
 from alr_sim.sims.SimFactory import SimRepository
+from gym.spaces import Box
 
 if __name__ == '__main__':
 
@@ -12,41 +13,26 @@ if __name__ == '__main__':
 
     controller = robot.torqueController
 
-    torque_logger = RobotLogger(robot)
-    torque_logger.plot_selection = RobotPlotFlags.TORQUES
-
-    scene.add_logger(torque_logger)
-    scene.start_logging()
-    torque_logger.start_logging(duration=100.0)
-
     robot.set_desired_gripper_width(0.02)
-    init_pos = robot.current_c_pos
-    init_or = robot.current_c_quat
 
-    # robot.gotoCartPositionAndQuat(
-    #     [0.5, 0.0, 0.5], [0, 0, 1, 1], duration=duration
-    # )
+    original_qpos = scene.init_qpos
+    print(original_qpos)
 
-    # robot.gotoCartPositionAndQuat(init_pos, init_or, duration=duration)
+    variance = np.array([0.025, 0.025, 0.025, 0.025, 0.02, 0.02, 0.02, 0, 0])
+    variance_space = Box(low=-variance, high=variance)
 
+    for i in range(100):
 
-    # torque based controls
+        sample = variance_space.sample()
+        new_qpos = original_qpos + sample
+        scene.init_qpos = new_qpos
 
-    # controller.setAction(np.array([1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]))
-    #
-    # controller.executeController(robot, maxDuration=duration)
+        print("sample", sample)
+        print("new position", new_qpos)
 
-    action = np.array([0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0])
+        scene.reset()
 
-    robot.executeTorqueCtrlTimeStep(action, timeSteps=300)
+        action = np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
 
-    # action = np.array([0.0, -2.0, 0.0, 0.0, 0.0, 0.0, 0.0])
-    #
-    # robot.executeTorqueCtrlTimeStep(-action, timeSteps=500)
+        robot.executeTorqueCtrlTimeStep(action, timeSteps=1_000)
 
-    scene.stop_logging()
-    torque_logger.stop_logging()
-    torque_logger.plot(
-        plot_selection=RobotPlotFlags.TORQUES
-        | RobotPlotFlags.COMMAND
-    )
