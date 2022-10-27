@@ -16,6 +16,7 @@ class ReachEnv(GymEnvWrapper):
         max_steps_per_episode: int = 250,
         debug: bool = False,
         random_goal: bool = False,
+        random_init: bool = False,
         render=False
     ):
         sim_factory = SimRepository.get_factory(simulator)
@@ -49,14 +50,15 @@ class ReachEnv(GymEnvWrapper):
 
         self.target_min_dist = 0.05
 
-        self.init_pos_space = SamplingSpace(
-            low=np.array([0.5, 0, 0.65]), high=np.array([0.6, 0, 0.75])
-        )
-        self.init_robot_c_pos = np.array([5.50899712e-01, -1.03382391e-08, 6.99822168e-01])
+        self.random_init = random_init
+        variance = np.array([0.05, 0.05, 0.05, 0.05, 0.025, 0.025, 0.025, 0, 0])
+        self.variance_space = SamplingSpace(low=-variance, high=variance)
 
         self.observation_space = SamplingSpace(low=-np.inf, high=np.inf, shape=(34,), dtype=np.float64)
         self.action_space = self.controller.action_space()
         self.start()
+
+        self.orig_init_qpos = self.scene.init_qpos
 
     _DEFAULT_VALUE_AT_MARGIN = 0.1
 
@@ -91,6 +93,9 @@ class ReachEnv(GymEnvWrapper):
         return False
 
     def _reset_env(self):
+        if self.random_init:
+            self.scene.init_qpos = self.orig_init_qpos + self.variance_space.sample()
+
         if self.random_goal:
             new_goal = [self.goal, self.goal_space.sample()]
             self.scene.reset([new_goal])
