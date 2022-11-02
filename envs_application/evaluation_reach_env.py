@@ -13,7 +13,7 @@ if __name__ == "__main__":
     # create scene and environment
 
     env = gym.make("ReachEnv-v5")
-    file_path = "../evaluation/simple_reach/best_model_random_exp"
+    file_path = "../evaluation/simple_reach/best_model"
 
     # load trained model and run it
 
@@ -24,6 +24,6 @@ if __name__ == "__main__":
     while True:
         action, _states = model.predict(obs)
         obs, rewards, done, info = env.step(action)
-        print("action", action, "observation", obs, "reward", rewards, "info", info)
+        print("action:", action, "/ observation:", obs, "/ reward:", rewards, "/ info:", info)
         if done:
             obs = env.reset()

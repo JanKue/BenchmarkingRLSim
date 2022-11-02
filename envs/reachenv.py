@@ -48,7 +48,7 @@ class ReachEnv(GymEnvWrapper):
         )
         self.scene.add_object(self.goal)
 
-        self.target_min_dist = 0.05
+        self.target_min_dist = 0.025
 
         self.random_init = random_init
         variance = np.array([0.05, 0.05, 0.05, 0.05, 0.025, 0.025, 0.025, 0, 0])
