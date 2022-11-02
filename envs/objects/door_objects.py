@@ -6,7 +6,10 @@ from alr_sim.sims.mujoco.MujocoLoadable import MujocoXmlLoadable
 
 class DoorObjects(SimObject, MujocoXmlLoadable, ABC):
 
-    def __init__(self, name: str, init_pos, init_quat):
+    def __init__(self,
+                 name: str,
+                 init_pos=[0.0, 0.0, 0.0],
+                 init_quat=[0.0, 0.0, 0.0, 0.0]):
         super(DoorObjects, self).__init__(name, init_pos, init_quat)
         self.xml_file_path = "/home/jan/SimulationFramework/models/mujoco/objects/door_objects.xml"
 
