@@ -1,8 +1,11 @@
 from alr_sim.sims.SimFactory import SimRepository
 import alr_sim.sims.universal_sim.PrimitiveObjects as PrimObj
-from objects.hammer import Hammer
+from objects.hammer_objects import HammerObjects
+from objects.door_objects import DoorObjects
 
 if __name__ == '__main__':
+
+    # OBJECT DEFINITION
 
     box1 = PrimObj.Box(
         name="box1",
@@ -33,13 +36,21 @@ if __name__ == '__main__':
         static=True,
     )
 
-    hammer = Hammer(
+    hammer_objects = HammerObjects(
         name="hammer0",
         init_pos=[0.0, 0.0, 0.0],
         init_quat=[0.0, 0.0, 0.0, 0.0]
     )
 
-    object_list = [table]
+    door_objects = DoorObjects(
+        name="hammer0",
+        init_pos=[0.0, 0.0, 0.0],
+        init_quat=[0.0, 0.0, 0.0, 0.0]
+    )
+
+    object_list = [door_objects]
+
+    # SCENE SETUP
 
     sim_factory = SimRepository.get_factory("mujoco")
     scene = sim_factory.create_scene(object_list=object_list, random_env=True)
@@ -47,12 +58,11 @@ if __name__ == '__main__':
     scene.start()
     duration = 4
 
+    # DUMMY MOVEMENT
+
     robot.set_desired_gripper_width(0.02)
     init_pos = robot.current_c_pos
     init_or = robot.current_c_quat
-
-    print(init_pos)
-    print(init_or)
 
     robot.gotoCartPositionAndQuat(
         [0.5, 0.0, 0.5], init_or, duration=duration
