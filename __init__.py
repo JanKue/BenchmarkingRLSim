@@ -1,6 +1,6 @@
 
 from gym.envs.registration import register
-from envs.reachenv import ReachEnv
+from envs.simple_reach_env import ReachEnv
 
 register(
     id="ReachEnv-v0",
