@@ -67,7 +67,11 @@ class DoorOpenEnv(GymEnvWrapper):
         hinge_pos = self.scene.sim.data.get_joint_qpos("doorjoint")
         hinge_difference = hinge_pos - self.hinge_goal
 
-        total_reward = - tcp_handle_distance - 10 * hinge_difference
+        if tcp_handle_distance <= 0.1:
+            total_reward = - tcp_handle_distance - np.exp(hinge_difference)
+        else:
+            total_reward = - tcp_handle_distance
+
         return total_reward
 
     def _check_early_termination(self) -> bool:
