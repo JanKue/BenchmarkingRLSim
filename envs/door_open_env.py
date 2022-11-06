@@ -14,7 +14,7 @@ class DoorOpenEnv(GymEnvWrapper):
         self,
         simulator: str,
         n_substeps: int = 10,
-        max_steps_per_episode: int = 500,
+        max_steps_per_episode: int = 250,
         debug: bool = True,
         random_init: bool = False,
         render=True
@@ -62,12 +62,10 @@ class DoorOpenEnv(GymEnvWrapper):
         tcp_pos = self.robot.current_c_pos
         handle_pos = self.scene.sim.data.get_geom_xpos("handle")
         tcp_handle_distance = np.linalg.norm(tcp_pos - handle_pos)
-        print(np.exp(tcp_handle_distance**2))
 
         # calculate door opening angle and compare to target value
         hinge_pos = self.scene.sim.data.get_joint_qpos("doorjoint")
         hinge_difference = hinge_pos - self.hinge_goal
-        print(np.exp(hinge_difference))
 
         if tcp_handle_distance > 0.1:
             reward = - np.exp(tcp_handle_distance**2) - np.exp(hinge_difference)
