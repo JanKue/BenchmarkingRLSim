@@ -1,3 +1,6 @@
+import time
+
+import numpy as np
 from alr_sim.sims.SimFactory import SimRepository
 import alr_sim.sims.universal_sim.PrimitiveObjects as PrimObj
 from envs.objects.hammer_objects import HammerObjects
@@ -37,13 +40,13 @@ if __name__ == '__main__':
     )
 
     hammer_objects = HammerObjects(
-        name="hammer0",
+        name="hammer-and-block",
         init_pos=[0.0, 0.0, 0.0],
         init_quat=[0.0, 0.0, 0.0, 0.0]
     )
 
     door_objects = DoorObjects(
-        name="hammer0",
+        name="safe-and-door",
         init_pos=[0.0, 0.0, 0.0],
         init_quat=[0.0, 0.0, 0.0, 0.0]
     )
@@ -58,15 +61,40 @@ if __name__ == '__main__':
     scene.start()
     duration = 4
 
-    # DUMMY MOVEMENT
+    # MOVEMENT
 
-    robot.set_desired_gripper_width(0.02)
+    robot.set_desired_gripper_width(0.01)
     init_pos = robot.current_c_pos
     init_or = robot.current_c_quat
 
+    # DOOR DEMO
+
+    print(scene.sim.data.get_geom_xpos("handle"))
+    print(scene.sim.data.get_joint_qpos("doorjoint"))
+
     robot.gotoCartPositionAndQuat(
-        [0.5, 0.0, 0.5], init_or, duration=duration
+        [0.5, 0.4, 0.1], [0, 1, 1, 0], duration=duration
     )
 
-    robot.gotoCartPositionAndQuat(init_pos, init_or, duration=duration)
+    print(scene.sim.data.get_joint_qpos("doorjoint"))
+
+    robot.gotoCartPositionAndQuat(
+        [0.15, 0.1, 0.1], [0, 1, 1, 0], duration=duration
+    )
+
+    print(scene.sim.data.get_geom_xpos("handle"))
+    print(scene.sim.data.get_joint_qpos("doorjoint"))
+
+    # scene.reset()
+    # print(scene.sim.data.get_geom_xpos("handle"))
+    # print(scene.sim.data.get_joint_qpos("doorjoint"))
+    #
+    # robot.gotoCartPositionAndQuat(
+    #     [0.5, 0.4, 0.1], [0, 1, 1, 0], duration=duration
+    # )
+
+    # HAMMER DEMO
+
+    # hammerhead = scene.get_object("hammerhead")
+    # print(scene.get_obj_pos(hammerhead))
 

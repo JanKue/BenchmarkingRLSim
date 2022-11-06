@@ -99,12 +99,8 @@ class ReachEnv(GymEnvWrapper):
         if self.random_goal:
             new_goal = [self.goal, self.goal_space.sample()]
             self.scene.reset([new_goal])
-            observation = self.get_observation()
         else:
             self.scene.reset()
-            observation = self.get_observation()
-
-        return observation
 
     def reset(self):
         self.terminated = False
