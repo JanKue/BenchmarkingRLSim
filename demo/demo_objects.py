@@ -17,13 +17,6 @@ if __name__ == '__main__':
         rgba=[0.1, 0.25, 0.3, 1],
     )
 
-    sphere1 = PrimObj.Sphere(
-        name="sphere1",
-        init_pos=[0.6, 0.0, 0.45],
-        init_quat=[0, 1, 0, 0],
-        rgba=[0.1, 0.25, 0.3, 1]
-    )
-
     cylinder1 = PrimObj.Cylinder(
         name="cylinder1",
         init_pos=[0.6, 0.2, 0.45],
@@ -39,6 +32,17 @@ if __name__ == '__main__':
         static=True,
     )
 
+    sphere1 = PrimObj.Sphere(
+        name="sphere1",
+        init_pos=[0.55, 0.34, 0.135],
+        init_quat=[0, 0, 0, 0],
+        rgba=[0.3, 0.0, 0.0, 1],
+        size=[0.09],
+        mass=1.0,
+        static=True,
+        visual_only=True
+    )
+
     hammer_objects = HammerObjects(
         name="hammer-and-block",
         init_pos=[0.0, 0.0, 0.0],
@@ -51,7 +55,7 @@ if __name__ == '__main__':
         init_quat=[0.0, 0.0, 0.0, 0.0]
     )
 
-    object_list = [door_objects]
+    object_list = [sphere1, door_objects]
 
     # SCENE SETUP
 
