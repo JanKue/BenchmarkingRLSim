@@ -13,7 +13,7 @@ if __name__ == "__main__":
     # create scene and environment
 
     env = gym.make("DoorOpenEnv-v0")
-    file_path = "../outcomes/evaluation/open_door/best_model"
+    file_path = "../outcomes/evaluation/open_door/best_model_run1"
 
     # load trained model and run it
 
@@ -24,6 +24,6 @@ if __name__ == "__main__":
     while True:
         action, _states = model.predict(obs)
         obs, rewards, done, info = env.step(action)
-        print("action:", action, "/ observation:", obs, "/ reward:", rewards, "/ info:", info)
+        # print("action:", action, "/ observation:", obs, "/ reward:", rewards, "/ info:", info)
         if done:
             obs = env.reset()

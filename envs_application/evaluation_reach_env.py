@@ -13,7 +13,7 @@ if __name__ == "__main__":
     # create scene and environment
 
     env = gym.make("ReachEnv-v5")
-    file_path = "../outcomes/evaluation/simple_reach/best_model"
+    file_path = "../outcomes/evaluation/simple_reach/best_model_random_init"
 
     # load trained model and run it
 
