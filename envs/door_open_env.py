@@ -67,10 +67,10 @@ class DoorOpenEnv(GymEnvWrapper):
         hinge_pos = self.scene.sim.data.get_joint_qpos("doorjoint")
         hinge_difference = hinge_pos - self.hinge_goal
 
-        if tcp_handle_distance > 0.1:
-            reward = - np.exp(tcp_handle_distance**2) - np.exp(hinge_difference)
+        if tcp_handle_distance > 0.075:
+            reward = - np.exp(tcp_handle_distance**2) - 10 * hinge_difference
         else:
-            reward = - np.exp(hinge_difference)
+            reward = - 10 * hinge_difference
 
         return reward
 
@@ -89,7 +89,7 @@ class DoorOpenEnv(GymEnvWrapper):
     def debug_msg(self) -> dict:
         hinge_pos = self.scene.sim.data.get_joint_qpos("doorjoint")
         hinge_difference = hinge_pos - self.hinge_goal
-        success = hinge_difference < self.success_threshold
+        success = hinge_difference < 1.0 # replace again with self.success_threshold
         return {"is_success": success}
 
 
