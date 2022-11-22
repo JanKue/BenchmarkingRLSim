@@ -1,5 +1,5 @@
 import gym
-from stable_baselines3 import SAC, TD3, A2C
+from stable_baselines3 import SAC, PPO, TD3, A2C
 
 from alr_sim.gyms.gym_controllers import GymTorqueController
 from alr_sim.sims.SimFactory import SimRepository
@@ -13,11 +13,11 @@ if __name__ == "__main__":
     # create scene and environment
 
     env = gym.make("DoorOpenEnv-v0")
-    file_path = "../outcomes/evaluation/open_door/best_model_run1"
+    file_path = "../outcomes/evaluation/open_door/ppo/best_model"
 
     # load trained model and run it
 
-    model = SAC.load(path=file_path, env=env)
+    model = PPO.load(path=file_path, env=env)
     print("Loaded model.")
 
     obs = env.reset()
