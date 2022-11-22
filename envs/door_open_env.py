@@ -36,8 +36,8 @@ class DoorOpenEnv(GymEnvWrapper):
         door_objects = DoorObjects(name="door_objects")
         scene.add_object(door_objects)
 
-        self.hinge_goal = -1.0
-        self.success_threshold = 0.20
+        self.hinge_goal = -2.0
+        self.success_threshold = 0.90
 
         self.observation_space = Box(low=-np.inf, high=np.inf, shape=(37,), dtype=np.float64)
         self.action_space = self.controller.action_space()

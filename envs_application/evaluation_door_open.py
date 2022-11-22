@@ -13,11 +13,11 @@ if __name__ == "__main__":
     # create scene and environment
 
     env = gym.make("DoorOpenEnv-v0")
-    file_path = "../outcomes/evaluation/open_door/ppo/best_model"
+    file_path = "../outcomes/evaluation/open_door/sac/best_model_run1"
 
     # load trained model and run it
 
-    model = PPO.load(path=file_path, env=env)
+    model = SAC.load(path=file_path, env=env)
     print("Loaded model.")
 
     obs = env.reset()
