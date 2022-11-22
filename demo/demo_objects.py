@@ -55,7 +55,7 @@ if __name__ == '__main__':
         init_quat=[0.0, 0.0, 0.0, 0.0]
     )
 
-    object_list = [sphere1, door_objects]
+    object_list = [hammer_objects]
 
     # SCENE SETUP
 
@@ -73,31 +73,47 @@ if __name__ == '__main__':
 
     # DOOR DEMO
 
-    print(scene.sim.data.get_geom_xpos("handle"))
-    print(scene.sim.data.get_joint_qpos("doorjoint"))
-
-    robot.gotoCartPositionAndQuat(
-        [0.5, 0.4, 0.1], [0, 1, 1, 0], duration=duration
-    )
-
-    print(scene.sim.data.get_joint_qpos("doorjoint"))
-
-    robot.gotoCartPositionAndQuat(
-        [0.15, 0.1, 0.1], [0, 1, 1, 0], duration=duration
-    )
-
-    print(scene.sim.data.get_geom_xpos("handle"))
-    print(scene.sim.data.get_joint_qpos("doorjoint"))
-
-    # scene.reset()
     # print(scene.sim.data.get_geom_xpos("handle"))
     # print(scene.sim.data.get_joint_qpos("doorjoint"))
     #
     # robot.gotoCartPositionAndQuat(
     #     [0.5, 0.4, 0.1], [0, 1, 1, 0], duration=duration
     # )
+    #
+    # print(scene.sim.data.get_joint_qpos("doorjoint"))
+    #
+    # robot.gotoCartPositionAndQuat(
+    #     [0.15, 0.1, 0.1], [0, 1, 1, 0], duration=duration
+    # )
+    #
+    # print(scene.sim.data.get_geom_xpos("handle"))
+    # print(scene.sim.data.get_joint_qpos("doorjoint"))
+
+    # scene.reset()
+    # print(scene.sim.data.get_geom_xpos("handle"))
+    # print(scene.sim.data.get_joint_qpos("doorjoint"))
+
+    # robot.gotoCartPositionAndQuat(
+    #     [0.5, 0.4, 0.1], [0, 1, 1, 0], duration=duration
+    # )
 
     # HAMMER DEMO
+
+    print(scene.sim.data.get_joint_qpos("NailSlideJoint"))
+
+    robot.set_desired_gripper_width(0.025)
+
+    robot.gotoCartPositionAndQuat(
+        [0.5, 0.5, 0.0], [0, 0, 0, 0], duration=duration
+    )
+
+    robot.set_desired_gripper_width(0.005)
+
+    robot.gotoCartPositionAndQuat(
+        [0.5, -0.5, 0.1], [0, 0, 0, 0], duration=duration
+    )
+
+    print(scene.sim.data.get_joint_qpos("NailSlideJoint"))
 
     # hammerhead = scene.get_object("hammerhead")
     # print(scene.get_obj_pos(hammerhead))

@@ -2,6 +2,7 @@
 from gym.envs.registration import register
 from envs.simple_reach_env import ReachEnv
 from envs.door_open_env import DoorOpenEnv
+from envs.hammer_env import HammerEnv
 
 register(
     id="ReachEnv-v0",
@@ -82,6 +83,26 @@ register(
 register(
     id="DoorOpenEnv-v1",
     entry_point="envs.door_open_env:DoorOpenEnv",
+    max_episode_steps=250,
+    kwargs={"n_substeps": 10,
+            "random_init": False,
+            "simulator": 'mujoco',
+            "render": False}
+)
+
+register(
+    id="HammerEnv-v0",
+    entry_point="envs.hammer_env:HammerEnv",
+    max_episode_steps=250,
+    kwargs={"n_substeps": 10,
+            "random_init": False,
+            "simulator": 'mujoco',
+            "render": True}
+)
+
+register(
+    id="HammerEnv-v1",
+    entry_point="envs.hammer_env:HammerEnv",
     max_episode_steps=250,
     kwargs={"n_substeps": 10,
             "random_init": False,
