@@ -73,7 +73,7 @@ register(
 register(
     id="DoorOpenEnv-v0",
     entry_point="envs.door_open_env:DoorOpenEnv",
-    max_episode_steps=250,
+    max_episode_steps=625,
     kwargs={"n_substeps": 10,
             "random_init": False,
             "simulator": 'mujoco',
@@ -83,7 +83,7 @@ register(
 register(
     id="DoorOpenEnv-v1",
     entry_point="envs.door_open_env:DoorOpenEnv",
-    max_episode_steps=250,
+    max_episode_steps=625,
     kwargs={"n_substeps": 10,
             "random_init": False,
             "simulator": 'mujoco',

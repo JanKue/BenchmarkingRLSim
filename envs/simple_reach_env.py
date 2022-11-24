@@ -56,8 +56,9 @@ class ReachEnv(GymEnvWrapper):
 
         self.observation_space = SamplingSpace(low=-np.inf, high=np.inf, shape=(34,), dtype=np.float64)
         self.action_space = self.controller.action_space()
-        self.start()
+        self.reward_range = (-np.inf, 0)
 
+        self.start()
         self.orig_init_qpos = self.scene.init_qpos
 
     _DEFAULT_VALUE_AT_MARGIN = 0.1

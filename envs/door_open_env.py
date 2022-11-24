@@ -14,7 +14,7 @@ class DoorOpenEnv(GymEnvWrapper):
         self,
         simulator: str,
         n_substeps: int = 10,
-        max_steps_per_episode: int = 250,
+        max_steps_per_episode: int = 625,
         debug: bool = True,
         random_init: bool = False,
         render=True
@@ -41,10 +41,13 @@ class DoorOpenEnv(GymEnvWrapper):
 
         self.observation_space = Box(low=-np.inf, high=np.inf, shape=(37,), dtype=np.float64)
         self.action_space = self.controller.action_space()
+        self.reward_range = (-np.inf, 0)
 
         self.start()
 
     def get_observation(self) -> np.ndarray:
+        robot_state = self.robot_state()
+
         tcp_pos = self.robot.current_c_pos
         handle_pos = self.scene.sim.data.get_geom_xpos("handle")
         tcp_handle_distance = np.linalg.norm(tcp_pos - handle_pos)
@@ -53,10 +56,11 @@ class DoorOpenEnv(GymEnvWrapper):
 
         env_state = np.concatenate([tcp_pos, handle_pos, [tcp_handle_distance],
                                     [hinge_pos, self.hinge_goal, hinge_difference]])
-        robot_state = self.robot_state()
+
         return np.concatenate([robot_state, env_state])
 
     def get_reward(self):
+        self.robot.receiveState()
 
         # calculate distance between robot tcp and door hinge
         tcp_pos = self.robot.current_c_pos

@@ -42,6 +42,7 @@ class HammerEnv(GymEnvWrapper):
 
         self.observation_space = Box(low=-np.inf, high=np.inf, shape=(37,), dtype=np.float64)
         self.action_space = self.controller.action_space()
+        self.reward_range = (-np.inf, 0)
 
         self.start()
 
