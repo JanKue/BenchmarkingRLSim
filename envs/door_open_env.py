@@ -36,10 +36,10 @@ class DoorOpenEnv(GymEnvWrapper):
         door_objects = DoorObjects(name="door_objects")
         scene.add_object(door_objects)
 
-        self.hinge_goal = -2.0
-        self.success_threshold = 0.90
+        self.hinge_goal = -np.pi/2
+        self.success_threshold = np.pi/6
 
-        self.observation_space = Box(low=-np.inf, high=np.inf, shape=(37,), dtype=np.float64)
+        self.observation_space = Box(low=-np.inf, high=np.inf, shape=(47,), dtype=np.float64)
         self.action_space = self.controller.action_space()
         self.reward_range = (-np.inf, 0)
 
@@ -51,32 +51,51 @@ class DoorOpenEnv(GymEnvWrapper):
         tcp_pos = self.robot.current_c_pos
         handle_pos = self.scene.sim.data.get_geom_xpos("handle")
         tcp_handle_distance = np.linalg.norm(tcp_pos - handle_pos)
+        hand_target_pos = self.scene.sim.data.get_geom_xpos("hand_target")
+        hand_target_diff = tcp_pos - hand_target_pos
+        hand_target_distance = np.linalg.norm(hand_target_diff)
+        cylinder_size = [0.08, 0.08, 0.025]
         hinge_pos = self.scene.sim.data.get_joint_qpos("doorjoint")
         hinge_difference = hinge_pos - self.hinge_goal
 
         env_state = np.concatenate([tcp_pos, handle_pos, [tcp_handle_distance],
+                                    hand_target_pos, hand_target_diff, [hand_target_distance], cylinder_size,
                                     [hinge_pos, self.hinge_goal, hinge_difference]])
 
         return np.concatenate([robot_state, env_state])
 
     def get_reward(self):
         self.robot.receiveState()
+        tcp_pos = self.robot.current_c_pos
 
         # calculate distance between robot tcp and door hinge
-        tcp_pos = self.robot.current_c_pos
         handle_pos = self.scene.sim.data.get_geom_xpos("handle")
         tcp_handle_distance = np.linalg.norm(tcp_pos - handle_pos)
+
+        # guide the end effector to a cylinder between handle and door
+        hand_target_pos = self.scene.sim.data.get_geom_xpos("hand_target")
+        hand_target_diff = tcp_pos - hand_target_pos
+        hand_target_distance = np.linalg.norm(hand_target_diff)
+        cylinder_size = [0.08, 0.08, 0.025]
+        hand_in_cylinder = np.abs(hand_target_diff) < cylinder_size
+
 
         # calculate door opening angle and compare to target value
         hinge_pos = self.scene.sim.data.get_joint_qpos("doorjoint")
         hinge_difference = hinge_pos - self.hinge_goal
+        exp_hinge_diff = np.exp(hinge_difference) - 1.0
 
-        if tcp_handle_distance > 0.1:
-            reward = - tcp_handle_distance - 20 * hinge_difference
+        # if tcp_handle_distance > 0.075:
+        #     reward = - 5 * tcp_handle_distance - 20 * hinge_difference
+        # else:
+        #     reward = - 20 * hinge_difference
+
+        if not np.all(hand_in_cylinder):
+            reward = - 100 * hand_target_distance - 10 * exp_hinge_diff
         else:
-            reward = - 20 * hinge_difference
+            reward = - 10 * exp_hinge_diff
 
-        return reward
+        return np.minimum(reward, 0)
 
     def _check_early_termination(self) -> bool:
         hinge_pos = self.scene.sim.data.get_joint_qpos("doorjoint")
