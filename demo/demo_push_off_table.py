@@ -25,7 +25,7 @@ if __name__ == '__main__':
         static=True,
     )
 
-    object_list = [box1, table, cylinder1]
+    object_list = []
 
     sim_factory = SimRepository.get_factory("mujoco")
     scene = sim_factory.create_scene(object_list=object_list)
@@ -36,13 +36,12 @@ if __name__ == '__main__':
     robot.set_desired_gripper_width(0.0)
     init_pos = robot.current_c_pos
     init_or = robot.current_c_quat
+    print(init_or)
 
     robot.gotoCartPositionAndQuat(
-        [0.55, 0.0, 0.4], [0, 1, 0, 0], duration=duration
+        init_pos, [0, -1, 1, 0], duration=duration
     )
 
-    robot.gotoCartPositionAndQuat(
-        [0.75, 0.0, 0.35], [0, 1, 0, 0], duration=duration/2
-    )
+    print(robot.current_c_quat)
 
     robot.gotoCartPositionAndQuat(init_pos, init_or, duration=duration)
