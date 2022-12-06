@@ -12,8 +12,8 @@ if __name__ == "__main__":
 
     # create scene and environment
 
-    env = gym.make("ReachEnv-v1")
-    file_path = "../outcomes/models/ppo_simple_reach_staticgoal"
+    env = gym.make("ReachEnv-v3")
+    file_path = "../outcomes/evaluation/simple_reach/ppo/best_model"
 
     # load trained model and run it
 
