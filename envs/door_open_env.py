@@ -67,6 +67,7 @@ class DoorOpenEnv(GymEnvWrapper):
     def get_reward(self):
         self.robot.receiveState()
         tcp_pos = self.robot.current_c_pos
+        tcp_quat = self.robot.current_c_quat
 
         # calculate distance between robot tcp and door hinge
         handle_pos = self.scene.sim.data.get_geom_xpos("handle")
@@ -79,21 +80,25 @@ class DoorOpenEnv(GymEnvWrapper):
         cylinder_size = [0.08, 0.08, 0.025]
         hand_in_cylinder = np.abs(hand_target_diff) < cylinder_size
 
-
         # calculate door opening angle and compare to target value
         hinge_pos = self.scene.sim.data.get_joint_qpos("doorjoint")
         hinge_difference = hinge_pos - self.hinge_goal
         exp_hinge_diff = np.exp(hinge_difference) - 1.0
+
+        # keep robot end-effector upright by keeping W and Z close to 0
+        w_error = (np.exp(abs(tcp_quat[0])) - 1) ** 2
+        z_error = (np.exp(abs(tcp_quat[3])) - 1) ** 2
+        orientation_error = np.minimum(w_error + z_error, 10)
 
         # if tcp_handle_distance > 0.075:
         #     reward = - 5 * tcp_handle_distance - 20 * hinge_difference
         # else:
         #     reward = - 20 * hinge_difference
 
+        reward = - 10 * exp_hinge_diff - 2 * orientation_error
+
         if not np.all(hand_in_cylinder):
-            reward = - 100 * hand_target_distance - 10 * exp_hinge_diff
-        else:
-            reward = - 10 * exp_hinge_diff
+            reward -= 100 * hand_target_distance
 
         return np.minimum(reward, 0)
 
