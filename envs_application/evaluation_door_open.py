@@ -13,7 +13,9 @@ if __name__ == "__main__":
     # create scene and environment
 
     env = gym.make("DoorOpenEnv-v0")
-    file_path = "../outcomes/evaluation/open_door/sac/best_model"
+    file_path = "../outcomes/evaluation/open_door/sac/best_model_run10"
+    # file_path = "../outcomes/evaluation/open_door/sac/best_model_run11"
+    # file_path = "../outcomes/models/sac_open_door.zip"
 
     # load trained model and run it
 
