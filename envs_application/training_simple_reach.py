@@ -13,11 +13,11 @@ if __name__ == "__main__":
 
     env_name = "ReachEnv-v2"  # should be  ReachEnv-v0, -v2, or -v4
     # env = gym.make(env_name)  # regular env (SAC)
-    env = make_vec_env(env_name, n_envs=8)  # vector env (PPO)
+    env = make_vec_env(env_name, n_envs=8, seed=1)  # vector env (PPO)
     env = VecNormalize(venv=env, norm_obs=True, norm_reward=True)
     # eval_env = gym.make(env_name)  # regular env for evaluation
-    eval_env = make_vec_env(env_name, n_envs=1)
-    eval_env = VecNormalize(venv=eval_env)
+    eval_env = make_vec_env(env_name, n_envs=1, seed=0)
+    eval_env = VecNormalize(venv=eval_env, norm_reward=False, training=False)
     logger = configure("../outcomes/tensorboard_log/simple_reach/ppo/random_goal/exp_reward", ["stdout", "tensorboard"])
     model_path = "../outcomes/models/ppo_simple_reach_randomgoal"
 
@@ -25,10 +25,10 @@ if __name__ == "__main__":
     # check_env(env)
     # print("finished checking env")
 
-    model = PPO("MlpPolicy", env=env, verbose=1)
+    model = PPO("MlpPolicy", env=env, verbose=1, seed=1)
     # model = PPO.load(path=model_path, env=env, force_reset=True)
     model.set_logger(logger)
-    model.learn(total_timesteps=10_000_000, eval_env=eval_env, eval_freq=10_000, n_eval_episodes=10,
+    model.learn(total_timesteps=1_000_000, eval_env=eval_env, eval_freq=10_000, n_eval_episodes=10,
                 eval_log_path="../outcomes/evaluation/simple_reach/ppo")
     model.save(model_path)
 
