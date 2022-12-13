@@ -8,12 +8,14 @@ from envs.meta_reach_env import MetaReachEnv
 
 import __init__
 
-if __name__ == "__main__":
+
+def main():
 
     # create scene and environment
 
     env = gym.make("ReachEnv-v3")
     file_path = "../outcomes/evaluation/simple_reach/ppo/best_model"
+    file_path = "../outcomes/models/ppo_simple_reach_randomgoal"
 
     # load trained model and run it
 
@@ -27,3 +29,7 @@ if __name__ == "__main__":
         print("action:", action, "/ observation:", obs, "/ reward:", rewards, "/ info:", info)
         if done:
             obs = env.reset()
+
+
+if __name__ == "__main__":
+    main()

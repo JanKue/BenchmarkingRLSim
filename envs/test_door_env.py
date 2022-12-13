@@ -14,13 +14,10 @@ import __init__
 import gym.spaces
 
 
+def main():
 
-if __name__ == "__main__":
+    env = gym.make("DoorOpenEnv-v1")
 
-    env = gym.make("DoorOpenEnv-v0")
-
-    scene = env.scene
-    robot = env.robot
     ctrl = env.controller
 
     env.reset()
@@ -37,3 +34,6 @@ if __name__ == "__main__":
             print("reset!")
             env.reset()
 
+
+if __name__ == "__main__":
+    main()

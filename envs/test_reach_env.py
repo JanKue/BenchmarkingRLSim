@@ -1,7 +1,3 @@
-import time
-import random
-import numpy as np
-
 from alr_sim.gyms.gym_controllers import GymCartesianVelController, GymTorqueController
 from alr_sim.sims.SimFactory import SimRepository
 
@@ -12,8 +8,7 @@ from meta_reach_env import MetaReachEnv
 import gym.spaces
 
 
-
-if __name__ == "__main__":
+def main():
 
     sim_factory = SimRepository.get_factory("mujoco")
 
@@ -47,3 +42,7 @@ if __name__ == "__main__":
             env.reset()
 
     scene.stop_logging()
+
+
+if __name__ == "__main__":
+    main()
