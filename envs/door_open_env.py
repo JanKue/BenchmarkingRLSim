@@ -69,16 +69,13 @@ class DoorOpenEnv(GymEnvWrapper):
         tcp_pos = self.robot.current_c_pos
         tcp_quat = self.robot.current_c_quat
 
-        # calculate distance between robot tcp and door hinge
-        handle_pos = self.scene.sim.data.get_geom_xpos("handle")
-        tcp_handle_distance = np.linalg.norm(tcp_pos - handle_pos)
-
         # guide the end effector to a cylinder between handle and door
         hand_target_pos = self.scene.sim.data.get_geom_xpos("hand_target")
         hand_target_diff = tcp_pos - hand_target_pos
         hand_target_distance = np.linalg.norm(hand_target_diff)
         cylinder_size = [0.08, 0.08, 0.025]
-        hand_in_cylinder = np.abs(hand_target_diff) < cylinder_size
+        hand_in_cylinder = np.all(np.abs(hand_target_diff) < cylinder_size)
+        hand_target_penalty = 100 * hand_target_distance if not hand_in_cylinder else 0
 
         # calculate door opening angle and compare to target value
         hinge_pos = self.scene.sim.data.get_joint_qpos("doorjoint")
@@ -86,19 +83,11 @@ class DoorOpenEnv(GymEnvWrapper):
         exp_hinge_diff = np.exp(hinge_difference) - 1.0
 
         # keep robot end-effector upright by keeping W and Z close to 0
-        w_error = (np.exp(abs(tcp_quat[0])) - 1) ** 2
-        z_error = (np.exp(abs(tcp_quat[3])) - 1) ** 2
-        orientation_error = np.minimum(w_error + z_error, 10)
+        # w_error = (np.exp(abs(tcp_quat[0])) - 1) ** 2
+        # z_error = (np.exp(abs(tcp_quat[3])) - 1) ** 2
+        # orientation_error = np.minimum(w_error + z_error, 10)
 
-        # if tcp_handle_distance > 0.075:
-        #     reward = - 5 * tcp_handle_distance - 20 * hinge_difference
-        # else:
-        #     reward = - 20 * hinge_difference
-
-        reward = - 10 * exp_hinge_diff - 2 * orientation_error
-
-        if not np.all(hand_in_cylinder):
-            reward -= 100 * hand_target_distance
+        reward = - 25 * exp_hinge_diff - hand_target_penalty
 
         return np.minimum(reward, 0)
 
