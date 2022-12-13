@@ -1,5 +1,3 @@
-import time
-
 import numpy as np
 from alr_sim.sims.SimFactory import SimRepository
 import alr_sim.sims.universal_sim.PrimitiveObjects as PrimObj

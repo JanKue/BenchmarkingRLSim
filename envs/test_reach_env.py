@@ -3,26 +3,17 @@ from alr_sim.sims.SimFactory import SimRepository
 
 from alr_sim.core.logger import RobotPlotFlags
 
-from meta_reach_env import MetaReachEnv
-
 import gym.spaces
+
+import __init__
 
 
 def main():
 
-    sim_factory = SimRepository.get_factory("mujoco")
-
-    scene = sim_factory.create_scene()
-    robot = sim_factory.create_robot(scene)
-    # ctrl = GymCartesianVelController(
-    #     robot,
-    #     fixed_orientation=np.array([0, 1, 0, 0]),
-    #     max_cart_vel=0.1,
-    #     use_spline=False,
-    # )
-    # robot.cartesianPosQuatTrackingController.neglect_dynamics = False
-    ctrl = GymTorqueController(robot)
-    env = MetaReachEnv(scene, robot, ctrl, max_steps=500, random_env=True)
+    env = gym.make("ReachEnv-v1")
+    scene = env.scene
+    robot = env.robot
+    ctrl = env.controller
 
     env.start()
 
