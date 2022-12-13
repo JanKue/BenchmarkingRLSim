@@ -1,6 +1,6 @@
 
 from gym.envs.registration import register
-from envs.simple_reach_env import ReachEnv
+from envs.reach_env import ReachEnv
 from envs.door_open_env import DoorOpenEnv
 from envs.hammer_env import HammerEnv
 
