@@ -8,14 +8,13 @@ from envs.meta_reach_env import MetaReachEnv
 
 import __init__
 
-if __name__ == "__main__":
+
+def main():
 
     # create scene and environment
 
     env = gym.make("DoorOpenEnv-v0")
-    file_path = "../outcomes/evaluation/open_door/sac/best_model_run10"
-    # file_path = "../outcomes/evaluation/open_door/sac/best_model_run11"
-    # file_path = "../outcomes/models/sac_open_door.zip"
+    file_path = "../outcomes/evaluation/open_door/sac/best_model"
 
     # load trained model and run it
 
@@ -29,3 +28,7 @@ if __name__ == "__main__":
         # print("action:", action, "/ observation:", obs, "/ reward:", rewards, "/ info:", info)
         if done:
             obs = env.reset()
+
+
+if __name__ == "__main__":
+    main()

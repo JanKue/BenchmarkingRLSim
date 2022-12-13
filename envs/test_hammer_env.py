@@ -1,26 +1,12 @@
-import time
-import random
-import numpy as np
-
-from alr_sim.gyms.gym_controllers import GymCartesianVelController, GymTorqueController
-from alr_sim.sims.SimFactory import SimRepository
-
-from alr_sim.core.logger import RobotPlotFlags
-
-from meta_push_env import MetaPushEnv
-
 import __init__
 
 import gym.spaces
 
 
-
-if __name__ == "__main__":
+def main():
 
     env = gym.make("HammerEnv-v0")
 
-    scene = env.scene
-    robot = env.robot
     ctrl = env.controller
 
     env.reset()
@@ -37,3 +23,6 @@ if __name__ == "__main__":
             print("reset!")
             env.reset()
 
+
+if __name__ == "__main__":
+    main()

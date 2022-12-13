@@ -7,7 +7,8 @@ from stable_baselines3.common.vec_env import VecNormalize, SubprocVecEnv
 
 import __init__
 
-if __name__ == "__main__":
+
+def main():
 
     # setup parameters
 
@@ -26,9 +27,12 @@ if __name__ == "__main__":
     # print("finished checking env")
 
     model = PPO("MlpPolicy", env=env, verbose=1, seed=1)
-    # model = PPO.load(path=model_path, env=env, force_reset=True)
+    model = PPO.load(path=model_path, env=env, force_reset=True)
     model.set_logger(logger)
-    model.learn(total_timesteps=1_000_000, eval_env=eval_env, eval_freq=10_000, n_eval_episodes=10,
+    model.learn(total_timesteps=3_000_000, eval_env=eval_env, eval_freq=10_000, n_eval_episodes=10,
                 eval_log_path="../outcomes/evaluation/simple_reach/ppo")
     model.save(model_path)
 
+
+if __name__ == "__main__":
+    main()
