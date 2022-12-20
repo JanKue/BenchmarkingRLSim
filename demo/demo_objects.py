@@ -75,7 +75,7 @@ if __name__ == '__main__':
         init_quat=[0.0, 0.0, 0.0, 0.0]
     )
 
-    object_list = [door_objects, cylinder2]
+    object_list = [hammer_objects]
 
     # SCENE SETUP
 
@@ -93,58 +93,68 @@ if __name__ == '__main__':
 
     # DOOR DEMO
 
-    print(scene.sim.data.get_geom_xpos("hand_target"))
-    print(scene.sim.data.get_body_xpos("doorlockB"))
-    print(scene.sim.data.get_joint_qpos("doorjoint"))
-
-    robot.gotoCartPositionAndQuat(
-        [0.6, 0.4, 0.1], [0, 1, 1, 0], duration=duration
-    )
-
-    target_pos = scene.get_obj_pos(cylinder2)
-    tcp_pos = robot.current_c_pos
-    print(target_pos)
-    print(tcp_pos)
-    pos_diff = np.abs(target_pos - tcp_pos)
-    print(pos_diff)
-    print(pos_diff < [0.08, 0.08, 0.025])
-    print(np.all(pos_diff < [0.08, 0.08, 0.025]))
+    # print(scene.sim.data.get_geom_xpos("hand_target"))
+    # print(scene.sim.data.get_body_xpos("doorlockB"))
+    # print(scene.sim.data.get_joint_qpos("doorjoint"))
+    #
+    # robot.gotoCartPositionAndQuat(
+    #     [0.6, 0.4, 0.1], [0, 1, 1, 0], duration=duration
+    # )
+    #
+    # target_pos = scene.get_obj_pos(cylinder2)
+    # tcp_pos = robot.current_c_pos
+    # print(target_pos)
+    # print(tcp_pos)
+    # pos_diff = np.abs(target_pos - tcp_pos)
+    # print(pos_diff)
+    # print(pos_diff < [0.08, 0.08, 0.025])
+    # print(np.all(pos_diff < [0.08, 0.08, 0.025]))
 
 
     # print(scene.sim.data.get_joint_qpos("doorjoint"))
 
-    robot.gotoCartPositionAndQuat(
-        [0.15, 0.1, 0.1], [0, 1, 1, 0], duration=duration
-    )
+    # robot.gotoCartPositionAndQuat(
+    #     [0.15, 0.1, 0.1], [0, 1, 1, 0], duration=duration
+    # )
 
     # print(scene.sim.data.get_geom_xpos("handle"))
     # print(scene.sim.data.get_joint_qpos("doorjoint"))
 
-    scene.reset()
+    #scene.reset()
     # print(scene.sim.data.get_geom_xpos("handle"))
     # print(scene.sim.data.get_joint_qpos("doorjoint"))
 
-    robot.gotoCartPositionAndQuat(
-        [0.6, 0.39, 0.1], [0, 1, 1, 0], duration=duration
-    )
+    # robot.gotoCartPositionAndQuat(
+    #     [0.6, 0.39, 0.1], [0, 1, 1, 0], duration=duration
+    # )
 
     # HAMMER DEMO
 
-    # print(scene.sim.data.get_joint_qpos("NailSlideJoint"))
-    #
-    # robot.set_desired_gripper_width(0.025)
-    #
-    # robot.gotoCartPositionAndQuat(
-    #     [0.5, 0.5, 0.0], [0, 0, 0, 0], duration=duration
-    # )
-    #
-    # robot.set_desired_gripper_width(0.005)
-    #
-    # robot.gotoCartPositionAndQuat(
-    #     [0.5, -0.5, 0.1], [0, 0, 0, 0], duration=duration
-    # )
-    #
-    # print(scene.sim.data.get_joint_qpos("NailSlideJoint"))
+    print(scene.sim.data.get_joint_qpos("NailSlideJoint"))
+
+    robot.set_desired_gripper_width(0.025)
+
+    print("picking up hammer")
+    robot.gotoCartPositionAndQuat(
+        [0.5, 0.5, 0.0], [0, 0, 0, 0], duration=duration
+    )
+    print("picked up hammer")
+
+    robot.set_desired_gripper_width(0.005)
+
+    print("moving hammer")
+    robot.gotoCartPositionAndQuat(
+        [0.35, -0.25, 0.1], [0, 0, 0, 0], duration=duration
+    )
+    print("moved hammer")
+
+    print("hitting nail")
+    robot.gotoCartPositionAndQuat(
+        [0.35, -0.4, 0.1], [0, 0, 0, 0], duration=duration
+    )
+    print("hit nail")
+
+    print(scene.sim.data.get_joint_qpos("NailSlideJoint"))
 
     # hammerhead = scene.get_object("hammerhead")
     # print(scene.get_obj_pos(hammerhead))
