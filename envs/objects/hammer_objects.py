@@ -11,7 +11,7 @@ class HammerObjects(SimObject, MujocoXmlLoadable, ABC):
                  init_pos=[0.0, 0.0, 0.0],
                  init_quat=[0.0, 0.0, 0.0, 0.0]):
         super(HammerObjects, self).__init__(name, init_pos, init_quat)
-        self.xml_file_path = "/home/jan/SimulationFramework/models/mujoco/objects/hammer_objects.xml"
+        self.xml_file_path = "/home/kit/anthropomatik/ln6495/SimulationFramework/models/mujoco/objects/hammer_objects.xml"
 
     def xml_file_path(self):
         return self.xml_file_path
