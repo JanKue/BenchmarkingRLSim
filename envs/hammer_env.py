@@ -47,6 +47,7 @@ class HammerEnv(GymEnvWrapper):
         self.start()
 
     def get_observation(self) -> np.ndarray:
+        robot_state = self.robot_state()
 
         tcp_pos = self.robot.current_c_pos
         handle_pos = self.scene.sim.data.get_geom_xpos("HammerHandle")
@@ -56,7 +57,6 @@ class HammerEnv(GymEnvWrapper):
 
         env_state = np.concatenate([tcp_pos, handle_pos, [tcp_handle_distance],
                                     [nail_joint_pos, self.nail_goal, nail_goal_difference]])
-        robot_state = self.robot_state()
 
         return np.concatenate([env_state, robot_state])
 
@@ -69,7 +69,7 @@ class HammerEnv(GymEnvWrapper):
         nail_joint_pos = self.scene.sim.data.get_joint_qpos("NailSlideJoint")
         nail_goal_difference = self.nail_goal - nail_joint_pos
 
-        reward = - tcp_handle_distance - 100 * nail_goal_difference
+        reward = - 10 * tcp_handle_distance - 100 * nail_goal_difference
 
         return reward
 
