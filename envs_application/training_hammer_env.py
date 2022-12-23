@@ -7,16 +7,14 @@ from stable_baselines3.common.logger import configure
 import __init__
 
 
-def main():
+def main(env_name: str, path: str, total_steps: int = 2_000_000, **kwargs):
 
-    # setup parameters
-
-    env_name = "HammerEnv-v1"  # should be  HammerEnv-v1
+    # setup
     env = gym.make(env_name)  # regular env (SAC)
     # env = make_vec_env(env_name, n_envs=8)  # vector env (PPO)
     eval_env = gym.make(env_name)  # regular env for evaluation
-    logger = configure("../outcomes/tensorboard_log/hammer/sac", ["stdout", "tensorboard"])
-    model_path = "../outcomes/models/sac_hammer"
+    logger = configure(path + "/tensorboard_log/hammer/sac", ["stdout", "tensorboard"])
+    model_path = path + "/models/sac_hammer"
 
     # print("begin checking env")
     # check_env(env)
@@ -25,10 +23,10 @@ def main():
     model = SAC("MlpPolicy", env=env, verbose=1, seed=1)
     # model = SAC.load(path=model_path, env=env, force_reset=True)
     model.set_logger(logger)
-    model.learn(total_timesteps=2_500_000, eval_env=eval_env, eval_freq=10_000, n_eval_episodes=10,
-                eval_log_path="../outcomes/evaluation/hammer/sac")
+    model.learn(total_timesteps=total_steps, eval_env=eval_env, eval_freq=10_000, n_eval_episodes=10,
+                eval_log_path=path + "/evaluation/hammer/sac")
     model.save(model_path)
 
 
 if __name__ == "__main__":
-    main()
+    main(env_name="HammerEnv-v1", path="../outcomes", total_steps=1_000_000)
