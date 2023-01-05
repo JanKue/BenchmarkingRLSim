@@ -7,7 +7,7 @@ num_parallel_jobs: 1  # max number of jobs executed in parallel
 ntasks: 1  # leave that like it is
 cpus-per-task: 1
 mem-per-cpu: 6000
-time: 1440  # in minutes
+time: 2880  # in minutes
 
 ---
 name: "reach_random_goal_sac"

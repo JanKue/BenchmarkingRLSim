@@ -12,7 +12,8 @@ class DoorExperiment(experiment.AbstractExperiment):
     def run(self, cw_config: dict, rep: int, logger: cw_logging.LoggerArray) -> None:
 
         params = cw_config['params']
-        training_open_door.main(env_name=params['env_name'], path=cw_config['path'], total_steps=5_000_000)
+        env_name = "DoorOpenEnv-v" + str(params['env_version'])
+        training_open_door.main(env_name=env_name, path=cw_config['path'], total_steps=params['total_steps'])
 
         return
 
