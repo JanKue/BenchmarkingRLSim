@@ -12,12 +12,16 @@ from gym.spaces import Box
 class DoorOpenEnv(GymEnvWrapper):
     def __init__(
         self,
-        simulator: str,
+        simulator: str = "mujoco",
         n_substeps: int = 10,
         max_steps_per_episode: int = 625,
         debug: bool = True,
         random_init: bool = False,
-        render=True
+        render=False,
+        reward_multiplier: int = 25,
+        reward_hand_penalty_ratio: int = 4,
+        reward_hinge_exp: bool = True,
+        reward_hinge_linear: int = 10,
     ):
         sim_factory = SimRepository.get_factory(simulator)
         render_mode = Scene.RenderMode.HUMAN if render else Scene.RenderMode.BLIND
@@ -42,6 +46,11 @@ class DoorOpenEnv(GymEnvWrapper):
         self.observation_space = Box(low=-np.inf, high=np.inf, shape=(47,), dtype=np.float64)
         self.action_space = self.controller.action_space()
         self.reward_range = (-np.inf, 0)
+
+        self.reward_multiplier = reward_multiplier
+        self.reward_hand_penalty_ratio = reward_hand_penalty_ratio
+        self.reward_hinge_exp = reward_hinge_exp
+        self.reward_hinge_linear = reward_hinge_linear
 
         self.start()
 
@@ -75,7 +84,7 @@ class DoorOpenEnv(GymEnvWrapper):
         hand_target_distance = np.linalg.norm(hand_target_diff)
         cylinder_size = [0.08, 0.08, 0.025]
         hand_in_cylinder = np.all(np.abs(hand_target_diff) < cylinder_size)
-        hand_target_penalty = 100 * hand_target_distance if not hand_in_cylinder else 0
+        hand_target_penalty = hand_target_distance if not hand_in_cylinder else 0
 
         # calculate door opening angle and compare to target value
         hinge_pos = self.scene.sim.data.get_joint_qpos("doorjoint")
@@ -87,7 +96,9 @@ class DoorOpenEnv(GymEnvWrapper):
         # z_error = (np.exp(abs(tcp_quat[3])) - 1) ** 2
         # orientation_error = np.minimum(w_error + z_error, 10)
 
-        reward = - 25 * exp_hinge_diff - hand_target_penalty
+        hinge_component = exp_hinge_diff if self.reward_hinge_exp else self.reward_hinge_linear * hinge_difference
+
+        reward = self.reward_multiplier * (- hinge_component - self.reward_hand_penalty_ratio * hand_target_penalty)
 
         return np.minimum(reward, 0)
 
