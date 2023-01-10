@@ -12,6 +12,8 @@ class ReachExperiment(experiment.AbstractExperiment):
     def run(self, cw_config: dict, rep: int, logger: cw_logging.LoggerArray) -> None:
 
         params = cw_config['params']
+        # print(cw_config)
+        # print(params)
         training_reach.main(env_name=params['env_name'], path=cw_config['path'], seed=params['seed'])
 
         return
