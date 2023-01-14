@@ -3,6 +3,7 @@ from alr_sim.sims.SimFactory import SimRepository
 import alr_sim.sims.universal_sim.PrimitiveObjects as PrimObj
 from envs.objects.hammer_objects import HammerObjects
 from envs.objects.door_objects import DoorObjects
+from envs.objects.soccer_objects import SoccerObjects
 
 if __name__ == '__main__':
 
@@ -63,19 +64,7 @@ if __name__ == '__main__':
         visual_only=True
     )
 
-    hammer_objects = HammerObjects(
-        name="hammer-and-block",
-        init_pos=[0.0, 0.0, 0.0],
-        init_quat=[0.0, 0.0, 0.0, 0.0]
-    )
-
-    door_objects = DoorObjects(
-        name="safe-and-door",
-        init_pos=[0.0, 0.0, 0.0],
-        init_quat=[0.0, 0.0, 0.0, 0.0]
-    )
-
-    object_list = [hammer_objects]
+    object_list = [box1, cylinder1, table]
 
     # SCENE SETUP
 
@@ -83,79 +72,11 @@ if __name__ == '__main__':
     scene = sim_factory.create_scene(object_list=object_list, random_env=True)
     robot = sim_factory.create_robot(scene)
     scene.start()
-    duration = 4
 
     # MOVEMENT
 
     robot.set_desired_gripper_width(0.01)
     init_pos = robot.current_c_pos
     init_or = robot.current_c_quat
-
-    # DOOR DEMO
-
-    # print(scene.sim.data.get_geom_xpos("hand_target"))
-    # print(scene.sim.data.get_body_xpos("doorlockB"))
-    # print(scene.sim.data.get_joint_qpos("doorjoint"))
-    #
-    # robot.gotoCartPositionAndQuat(
-    #     [0.6, 0.4, 0.1], [0, 1, 1, 0], duration=duration
-    # )
-    #
-    # target_pos = scene.get_obj_pos(cylinder2)
-    # tcp_pos = robot.current_c_pos
-    # print(target_pos)
-    # print(tcp_pos)
-    # pos_diff = np.abs(target_pos - tcp_pos)
-    # print(pos_diff)
-    # print(pos_diff < [0.08, 0.08, 0.025])
-    # print(np.all(pos_diff < [0.08, 0.08, 0.025]))
-
-
-    # print(scene.sim.data.get_joint_qpos("doorjoint"))
-
-    # robot.gotoCartPositionAndQuat(
-    #     [0.15, 0.1, 0.1], [0, 1, 1, 0], duration=duration
-    # )
-
-    # print(scene.sim.data.get_geom_xpos("handle"))
-    # print(scene.sim.data.get_joint_qpos("doorjoint"))
-
-    #scene.reset()
-    # print(scene.sim.data.get_geom_xpos("handle"))
-    # print(scene.sim.data.get_joint_qpos("doorjoint"))
-
-    # robot.gotoCartPositionAndQuat(
-    #     [0.6, 0.39, 0.1], [0, 1, 1, 0], duration=duration
-    # )
-
-    # HAMMER DEMO
-
-    print(scene.sim.data.get_joint_qpos("NailSlideJoint"))
-
-    robot.set_desired_gripper_width(0.025)
-
-    print("picking up hammer")
-    robot.gotoCartPositionAndQuat(
-        [0.5, 0.5, 0.0], [0, 0, 0, 0], duration=duration
-    )
-    print("picked up hammer")
-
-    robot.set_desired_gripper_width(0.005)
-
-    print("moving hammer")
-    robot.gotoCartPositionAndQuat(
-        [0.35, -0.25, 0.1], [0, 0, 0, 0], duration=duration
-    )
-    print("moved hammer")
-
-    print("hitting nail")
-    robot.gotoCartPositionAndQuat(
-        [0.35, -0.4, 0.1], [0, 0, 0, 0], duration=duration
-    )
-    print("hit nail")
-
-    print(scene.sim.data.get_joint_qpos("NailSlideJoint"))
-
-    # hammerhead = scene.get_object("hammerhead")
-    # print(scene.get_obj_pos(hammerhead))
+    duration = 4
 
