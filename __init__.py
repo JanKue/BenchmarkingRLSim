@@ -2,6 +2,7 @@ from gym.envs.registration import register
 from envs.reach_env import ReachEnv
 from envs.door_open_env import DoorOpenEnv
 from envs.hammer_env import HammerEnv
+from envs.soccer_env import SoccerEnv
 
 register(
     id="ReachEnv-v0",
@@ -107,6 +108,50 @@ register(
             "random_init": False,
             "simulator": 'mujoco',
             "render": False}
+)
+
+register(
+    id="SoccerEnv-v0",
+    entry_point="envs.soccer_env:SoccerEnv",
+    max_episode_steps=250,
+    kwargs={"n_substeps": 10,
+            "random_init": False,
+            "simulator": 'mujoco',
+            "render": True,
+            "random_ball_pos": False}
+)
+
+register(
+    id="SoccerEnv-v1",
+    entry_point="envs.soccer_env:SoccerEnv",
+    max_episode_steps=250,
+    kwargs={"n_substeps": 10,
+            "random_init": False,
+            "simulator": 'mujoco',
+            "render": False,
+            "random_ball_pos": False}
+)
+
+register(
+    id="SoccerEnv-v2",
+    entry_point="envs.soccer_env:SoccerEnv",
+    max_episode_steps=625,
+    kwargs={"n_substeps": 10,
+            "random_init": False,
+            "simulator": 'mujoco',
+            "render": True,
+            "random_ball_pos": True}
+)
+
+register(
+    id="SoccerEnv-v3",
+    entry_point="envs.soccer_env:SoccerEnv",
+    max_episode_steps=625,
+    kwargs={"n_substeps": 10,
+            "random_init": False,
+            "simulator": 'mujoco',
+            "render": False,
+            "random_ball_pos": True}
 )
 
 # testing different env reward options
