@@ -38,8 +38,8 @@ if __name__ == '__main__':
         rgba=[0.3, 0.0, 0.0, 1],
         size=[0.09],
         mass=1.0,
-        static=True,
-        visual_only=True
+        static=False,
+        visual_only=False
     )
 
     sphere2 = PrimObj.Sphere(
@@ -64,7 +64,7 @@ if __name__ == '__main__':
         visual_only=True
     )
 
-    object_list = [box1, cylinder1, table]
+    object_list = [box1, cylinder1, table, sphere1, sphere2]
 
     # SCENE SETUP
 
@@ -80,3 +80,6 @@ if __name__ == '__main__':
     init_or = robot.current_c_quat
     duration = 4
 
+    robot.gotoCartPositionAndQuat(
+        [0.4, -0.15, 0.01], [0, 1, 1, 0], duration=duration
+    )
