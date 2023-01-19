@@ -7,7 +7,7 @@ from stable_baselines3.common.logger import configure
 import __init__
 
 
-def main(env_name: str, path: str, total_steps: int = 2_500_000, **kwargs):
+def main(env_name: str, path: str, total_steps: int = 2_500_000, seed: int = 1, **kwargs):
 
     # setup
     env = gym.make(env_name)  # regular env (SAC)
@@ -21,7 +21,7 @@ def main(env_name: str, path: str, total_steps: int = 2_500_000, **kwargs):
     # check_env(env)
     # print("finished checking env")
 
-    model = SAC("MlpPolicy", env=env, verbose=1, seed=1)
+    model = SAC("MlpPolicy", env=env, verbose=1, seed=seed)
     # model = SAC.load(path=model_path, env=env, force_reset=True)
     model.set_logger(logger)
     model.learn(total_timesteps=total_steps,

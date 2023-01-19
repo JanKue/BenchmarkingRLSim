@@ -1,0 +1,19 @@
+---
+# SLURM BwUniCluster2.0
+name: "SLURM"  # MUST BE "SLURM"
+job-name: "soccer_task_experiment"  # this will be the experiment's name in slurm
+partition: "single"
+num_parallel_jobs: 100  # max number of jobs executed in parallel
+ntasks: 1  # leave that like it is
+cpus-per-task: 1
+mem-per-cpu: 6000
+time: 4320  # in minutes
+
+---
+name: "soccer_static"
+path: "outcomes/cluster/soccer_task"
+repetitions: 4
+
+params:
+  env_name: "SoccerEnv-v1"
+  total_steps: 3_000_000
