@@ -3,11 +3,11 @@
 name: "SLURM"  # MUST BE "SLURM"
 job-name: "door_open_task_experiment"  # this will be the experiment's name in slurm
 partition: "single"
-num_parallel_jobs: 4  # max number of jobs executed in parallel
+num_parallel_jobs: 100  # max number of jobs executed in parallel
 ntasks: 1  # leave that like it is
 cpus-per-task: 1
 mem-per-cpu: 6000
-time: 2880  # in minutes
+time: 4320  # in minutes
 
 ---
 name: "door_open_sac_reward_tuning"
@@ -15,7 +15,7 @@ path: "outcomes/cluster/door_open_task"
 repetitions: 1
 
 params:
-  total_steps: 3_000_000
+  total_steps: 5_000_000
 
 list:
-  env_version: [22, 23, 24, 25]
+  env_version: [26, 27, 28]

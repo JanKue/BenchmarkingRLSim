@@ -217,72 +217,6 @@ register(
 )
 
 register(
-    id="DoorOpenEnv-v16",
-    entry_point="envs.door_open_env:DoorOpenEnv",
-    max_episode_steps=625,
-    kwargs={"render": False,
-            "reward_multiplier": 25,
-            "reward_hand_penalty_ratio": 4,
-            "reward_hinge_exp": False,
-            "reward_hinge_linear": 10}
-)
-
-register(
-    id="DoorOpenEnv-v17",
-    entry_point="envs.door_open_env:DoorOpenEnv",
-    max_episode_steps=625,
-    kwargs={"render": False,
-            "reward_multiplier": 10,
-            "reward_hand_penalty_ratio": 4,
-            "reward_hinge_exp": False,
-            "reward_hinge_linear": 10}
-)
-
-register(
-    id="DoorOpenEnv-v18",
-    entry_point="envs.door_open_env:DoorOpenEnv",
-    max_episode_steps=625,
-    kwargs={"render": False,
-            "reward_multiplier": 25,
-            "reward_hand_penalty_ratio": 1,
-            "reward_hinge_exp": False,
-            "reward_hinge_linear": 10}
-)
-
-register(
-    id="DoorOpenEnv-v19",
-    entry_point="envs.door_open_env:DoorOpenEnv",
-    max_episode_steps=625,
-    kwargs={"render": False,
-            "reward_multiplier": 10,
-            "reward_hand_penalty_ratio": 1,
-            "reward_hinge_exp": False,
-            "reward_hinge_linear": 10}
-)
-
-register(
-    id="DoorOpenEnv-v20",
-    entry_point="envs.door_open_env:DoorOpenEnv",
-    max_episode_steps=625,
-    kwargs={"render": False,
-            "reward_multiplier": 25,
-            "reward_hand_penalty_ratio": 10,
-            "reward_hinge_exp": False,
-            "reward_hinge_linear": 10}
-)
-
-register(
-    id="DoorOpenEnv-v21",
-    entry_point="envs.door_open_env:DoorOpenEnv",
-    max_episode_steps=625,
-    kwargs={"render": False,
-            "reward_multiplier": 10,
-            "reward_hand_penalty_ratio": 10,
-            "reward_hinge_exp": False,
-            "reward_hinge_linear": 10}
-)
-
-register(
     id="DoorOpenEnv-v22",
     entry_point="envs.door_open_env:DoorOpenEnv",
     max_episode_steps=625,
@@ -323,127 +257,31 @@ register(
 )
 
 register(
-    id="DoorOpenEnv-v30",
+    id="DoorOpenEnv-v26",
     entry_point="envs.door_open_env:DoorOpenEnv",
     max_episode_steps=625,
-    kwargs={"render": True,
+    kwargs={"render": False,
             "reward_multiplier": 25,
-            "reward_hand_penalty_ratio": 4,
+            "reward_hand_penalty_ratio": 25,
             "reward_hinge_exp": True}
 )
 
 register(
-    id="DoorOpenEnv-v31",
+    id="DoorOpenEnv-v27",
     entry_point="envs.door_open_env:DoorOpenEnv",
     max_episode_steps=625,
-    kwargs={"render": True,
-            "reward_multiplier": 10,
-            "reward_hand_penalty_ratio": 4,
+    kwargs={"render": False,
+            "reward_multiplier": 25,
+            "reward_hand_penalty_ratio": 30,
             "reward_hinge_exp": True}
 )
 
 register(
-    id="DoorOpenEnv-v32",
+    id="DoorOpenEnv-v28",
     entry_point="envs.door_open_env:DoorOpenEnv",
     max_episode_steps=625,
-    kwargs={"render": True,
-            "reward_multiplier": 25,
-            "reward_hand_penalty_ratio": 1,
+    kwargs={"render": False,
+            "reward_multiplier": 30,
+            "reward_hand_penalty_ratio": 25,
             "reward_hinge_exp": True}
-)
-
-register(
-    id="DoorOpenEnv-v33",
-    entry_point="envs.door_open_env:DoorOpenEnv",
-    max_episode_steps=625,
-    kwargs={"render": True,
-            "reward_multiplier": 10,
-            "reward_hand_penalty_ratio": 1,
-            "reward_hinge_exp": True}
-)
-
-register(
-    id="DoorOpenEnv-v34",
-    entry_point="envs.door_open_env:DoorOpenEnv",
-    max_episode_steps=625,
-    kwargs={"render": True,
-            "reward_multiplier": 25,
-            "reward_hand_penalty_ratio": 10,
-            "reward_hinge_exp": True}
-)
-
-register(
-    id="DoorOpenEnv-v35",
-    entry_point="envs.door_open_env:DoorOpenEnv",
-    max_episode_steps=625,
-    kwargs={"render": True,
-            "reward_multiplier": 10,
-            "reward_hand_penalty_ratio": 10,
-            "reward_hinge_exp": True}
-)
-
-register(
-    id="DoorOpenEnv-v36",
-    entry_point="envs.door_open_env:DoorOpenEnv",
-    max_episode_steps=625,
-    kwargs={"render": True,
-            "reward_multiplier": 25,
-            "reward_hand_penalty_ratio": 4,
-            "reward_hinge_exp": False,
-            "reward_hinge_linear": 10}
-)
-
-register(
-    id="DoorOpenEnv-v37",
-    entry_point="envs.door_open_env:DoorOpenEnv",
-    max_episode_steps=625,
-    kwargs={"render": True,
-            "reward_multiplier": 10,
-            "reward_hand_penalty_ratio": 4,
-            "reward_hinge_exp": False,
-            "reward_hinge_linear": 10}
-)
-
-register(
-    id="DoorOpenEnv-v38",
-    entry_point="envs.door_open_env:DoorOpenEnv",
-    max_episode_steps=625,
-    kwargs={"render": True,
-            "reward_multiplier": 25,
-            "reward_hand_penalty_ratio": 1,
-            "reward_hinge_exp": False,
-            "reward_hinge_linear": 10}
-)
-
-register(
-    id="DoorOpenEnv-v39",
-    entry_point="envs.door_open_env:DoorOpenEnv",
-    max_episode_steps=625,
-    kwargs={"render": True,
-            "reward_multiplier": 10,
-            "reward_hand_penalty_ratio": 1,
-            "reward_hinge_exp": False,
-            "reward_hinge_linear": 10}
-)
-
-register(
-    id="DoorOpenEnv-v40",
-    entry_point="envs.door_open_env:DoorOpenEnv",
-    max_episode_steps=625,
-    kwargs={"render": True,
-            "reward_multiplier": 25,
-            "reward_hand_penalty_ratio": 10,
-            "reward_hinge_exp": False,
-            "reward_hinge_linear": 10}
-)
-
-register(
-    id="DoorOpenEnv-v41",
-    entry_point="envs.door_open_env:DoorOpenEnv",
-    max_episode_steps=625,
-    kwargs={"render": True,
-            "reward_multiplier": 10,
-            "reward_hand_penalty_ratio": 10,
-            "reward_hinge_exp": False,
-            "reward_hinge_linear": 10}
 )
