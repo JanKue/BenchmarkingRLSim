@@ -17,9 +17,9 @@ def main(env_name: str, path: str, total_steps: int = 3_000_000, seed: int = 1, 
     eval_env = gym.make(env_name)  # regular env for evaluation
     # eval_env = make_vec_env(env_name, n_envs=1)
     # eval_env = VecNormalize(venv=eval_env, norm_reward=False, training=False)
-    logger = configure(path + "/tensorboard_log", ["stdout", "tensorboard"])
-    model_path = path + "/models/model"
-    eval_path = path + "/evaluation"
+    logger = configure(path, ["stdout", "tensorboard"])
+    model_path = path + "final_model"
+    eval_path = path
 
     # print("begin checking env")
     # check_env(env)
@@ -34,4 +34,4 @@ def main(env_name: str, path: str, total_steps: int = 3_000_000, seed: int = 1, 
 
 
 if __name__ == "__main__":
-    main(env_name="ReachEnv-v2", path="../outcomes/local/reach/random_goal/sac")
+    main(env_name="ReachEnv-v2", path="../outcomes/sac_random_goal")
