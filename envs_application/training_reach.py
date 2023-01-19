@@ -15,7 +15,7 @@ def main(env_name: str, path: str, total_steps: int = 3_000_000, seed: int = 1, 
     # env = make_vec_env(env_name, n_envs=8, seed=seed)  # vector env (PPO)
     # env = VecNormalize(venv=env, norm_obs=True, norm_reward=True)
     eval_env = gym.make(env_name)  # regular env for evaluation
-    # eval_env = make_vec_env(env_name, n_envs=1, seed=0)
+    # eval_env = make_vec_env(env_name, n_envs=1)
     # eval_env = VecNormalize(venv=eval_env, norm_reward=False, training=False)
     logger = configure(path + "/tensorboard_log", ["stdout", "tensorboard"])
     model_path = path + "/models/model"

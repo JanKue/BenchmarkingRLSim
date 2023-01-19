@@ -3,19 +3,17 @@
 name: "SLURM"  # MUST BE "SLURM"
 job-name: "reach_task_experiment"  # this will be the experiment's name in slurm
 partition: "single"
-num_parallel_jobs: 1  # max number of jobs executed in parallel
+num_parallel_jobs: 100  # max number of jobs executed in parallel
 ntasks: 1  # leave that like it is
 cpus-per-task: 1
 mem-per-cpu: 6000
-time: 2880  # in minutes
+time: 4320  # in minutes
 
 ---
-name: "reach_random_goal_sac"
-path: "outcomes/cluster/reach_task"
-repetitions: 1
+name: "reach_random_init_sac"
+path: "outcomes/cluster/reach_task_random"
+repetitions: 20
 
 params:
-  env_name: "ReachEnv-v2"
-
-list:
-  seed: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+  env_name: "ReachEnv-v4"
+  total_steps: 5_000_000
