@@ -4,12 +4,10 @@ name: "test_experiment"
 
 # Required: Can also be set in DEFAULT
 path: "outcomes/cluster/test1"   # location to save results in
-repetitions: 1    # number of times one set of parameters is run
+repetitions: 20    # number of times one set of parameters is run
 
 # Experiment Parameters:
 params:
   key: 'value'
   env_name: "ReachEnv-v0"
-
-list:
-  seed: [1, 2]
+  total_steps: 500

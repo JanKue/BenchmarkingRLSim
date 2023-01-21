@@ -14,10 +14,11 @@ class ReachExperiment(experiment.AbstractExperiment):
     def run(self, cw_config: dict, rep: int, logger: cw_logging.LoggerArray) -> None:
 
         params = cw_config['params']
+        rep_path = cw_config['path'] + "/rep" + str(rep)
 
         time.sleep(rep * 60)
 
-        training_reach.main(env_name=params['env_name'], path=cw_config['path'], total_steps=params['total_steps'],
+        training_reach.main(env_name=params['env_name'], path=rep_path, total_steps=params['total_steps'],
                             seed=rep)
 
         return

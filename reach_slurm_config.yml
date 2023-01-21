@@ -10,7 +10,7 @@ mem-per-cpu: 6000
 time: 4320  # in minutes
 
 ---
-name: "reach_random_init_sac"
+name: "reach_random_init_ppo"
 path: "outcomes/cluster/reach_task_random"
 repetitions: 20
 

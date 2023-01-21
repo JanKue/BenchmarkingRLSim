@@ -8,24 +8,25 @@ from stable_baselines3.common.vec_env import VecNormalize, SubprocVecEnv
 import __init__
 
 
-def main(env_name: str, path: str, total_steps: int = 3_000_000, seed: int = 1, **kwargs):
+def main(env_name: str, path: str, total_steps: int, seed: int = 1, **kwargs):
 
     # setup environments
-    env = gym.make(env_name)  # regular env (SAC)
-    # env = make_vec_env(env_name, n_envs=8, seed=seed)  # vector env (PPO)
-    # env = VecNormalize(venv=env, norm_obs=True, norm_reward=True)
-    eval_env = gym.make(env_name)  # regular env for evaluation
-    # eval_env = make_vec_env(env_name, n_envs=1)
-    # eval_env = VecNormalize(venv=eval_env, norm_reward=False, training=False)
-    logger = configure(path, ["stdout", "tensorboard"])
-    model_path = path + "final_model"
+    # env = gym.make(env_name)  # regular env (SAC)
+    env = make_vec_env(env_name, n_envs=8, seed=seed)  # vector env (PPO)
+    env = VecNormalize(venv=env, norm_obs=True, norm_reward=True)
+    # eval_env = gym.make(env_name)  # regular env for evaluation
+    eval_env = make_vec_env(env_name, n_envs=1)
+    eval_env = VecNormalize(venv=eval_env, norm_reward=False, training=False)
+
+    logger = configure(path, ["stdout", "log", "tensorboard"])
+    model_path = path + "/final_model"
     eval_path = path
 
     # print("begin checking env")
     # check_env(env)
     # print("finished checking env")
 
-    model = SAC("MlpPolicy", env=env, verbose=1, seed=seed)
+    model = PPO("MlpPolicy", env=env, verbose=1, seed=seed)
     # model = PPO.load(path=model_path, env=env, force_reset=True)
     model.set_logger(logger)
     model.learn(total_timesteps=total_steps,
@@ -34,4 +35,4 @@ def main(env_name: str, path: str, total_steps: int = 3_000_000, seed: int = 1, 
 
 
 if __name__ == "__main__":
-    main(env_name="ReachEnv-v2", path="../outcomes/sac_random_goal")
+    main(env_name="ReachEnv-v2", total_steps=3_000_000, path="../outcomes/sac_random_goal")
