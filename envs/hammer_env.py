@@ -12,7 +12,7 @@ from gym.spaces import Box
 class HammerEnv(GymEnvWrapper):
     def __init__(
         self,
-        simulator: str,
+        simulator: str = "mujoco",
         n_substeps: int = 10,
         max_steps_per_episode: int = 250,
         debug: bool = True,

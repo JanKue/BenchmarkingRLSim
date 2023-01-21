@@ -11,7 +11,7 @@ from alr_sim.core.Scene import Scene
 class ReachEnv(GymEnvWrapper):
     def __init__(
         self,
-        simulator: str,
+        simulator: str = "mujoco",
         n_substeps: int = 10,
         max_steps_per_episode: int = 250,
         debug: bool = True,

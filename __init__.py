@@ -11,7 +11,6 @@ register(
     kwargs={"n_substeps": 10,
             "random_goal": False,
             "random_init": False,
-            "simulator": 'mujoco',
             "render": False}
 )
 
@@ -22,7 +21,6 @@ register(
     kwargs={"n_substeps": 10,
             "random_goal": False,
             "random_init": False,
-            "simulator": 'mujoco',
             "render": True}
 )
 
@@ -33,7 +31,6 @@ register(
     kwargs={"n_substeps": 10,
             "random_goal": True,
             "random_init": False,
-            "simulator": 'mujoco',
             "render": False}
 )
 
@@ -44,7 +41,6 @@ register(
     kwargs={"n_substeps": 10,
             "random_goal": True,
             "random_init": False,
-            "simulator": 'mujoco',
             "render": True}
 )
 
@@ -55,7 +51,6 @@ register(
     kwargs={"n_substeps": 10,
             "random_goal": True,
             "random_init": True,
-            "simulator": 'mujoco',
             "render": False}
 )
 
@@ -66,7 +61,6 @@ register(
     kwargs={"n_substeps": 10,
             "random_goal": True,
             "random_init": True,
-            "simulator": 'mujoco',
             "render": True}
 )
 
@@ -76,7 +70,6 @@ register(
     max_episode_steps=625,
     kwargs={"n_substeps": 10,
             "random_init": False,
-            "simulator": 'mujoco',
             "render": True}
 )
 
@@ -86,7 +79,6 @@ register(
     max_episode_steps=625,
     kwargs={"n_substeps": 10,
             "random_init": False,
-            "simulator": 'mujoco',
             "render": False}
 )
 
@@ -96,7 +88,6 @@ register(
     max_episode_steps=250,
     kwargs={"n_substeps": 10,
             "random_init": False,
-            "simulator": 'mujoco',
             "render": True}
 )
 
@@ -106,17 +97,15 @@ register(
     max_episode_steps=250,
     kwargs={"n_substeps": 10,
             "random_init": False,
-            "simulator": 'mujoco',
             "render": False}
 )
 
 register(
     id="SoccerEnv-v0",
     entry_point="envs.soccer_env:SoccerEnv",
-    max_episode_steps=500,
+    max_episode_steps=250,
     kwargs={"n_substeps": 10,
             "random_init": False,
-            "simulator": 'mujoco',
             "render": True,
             "random_ball_pos": False}
 )
@@ -124,10 +113,9 @@ register(
 register(
     id="SoccerEnv-v1",
     entry_point="envs.soccer_env:SoccerEnv",
-    max_episode_steps=500,
+    max_episode_steps=250,
     kwargs={"n_substeps": 10,
             "random_init": False,
-            "simulator": 'mujoco',
             "render": False,
             "random_ball_pos": False}
 )
@@ -138,7 +126,6 @@ register(
     max_episode_steps=625,
     kwargs={"n_substeps": 10,
             "random_init": False,
-            "simulator": 'mujoco',
             "render": True,
             "random_ball_pos": True}
 )
@@ -149,7 +136,6 @@ register(
     max_episode_steps=625,
     kwargs={"n_substeps": 10,
             "random_init": False,
-            "simulator": 'mujoco',
             "render": False,
             "random_ball_pos": True}
 )
