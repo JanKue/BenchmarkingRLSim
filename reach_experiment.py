@@ -18,8 +18,8 @@ class ReachExperiment(experiment.AbstractExperiment):
 
         time.sleep(rep * 60)
 
-        training_reach.main(env_name=params['env_name'], path=rep_path, total_steps=params['total_steps'],
-                            seed=rep)
+        training_reach.main(env_name=params['env_name'], path=rep_path, algorithm=params['algorithm'],
+                            total_steps=params['total_steps'], seed=rep)
 
         return
 

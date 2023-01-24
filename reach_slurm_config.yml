@@ -10,10 +10,21 @@ mem-per-cpu: 6000
 time: 4320  # in minutes
 
 ---
-name: "reach_random_init_ppo"
+name: "reach_random_init_ddpg"
 path: "outcomes/cluster/reach_task_random"
 repetitions: 20
 
 params:
   env_name: "ReachEnv-v4"
   total_steps: 5_000_000
+  algorithm: "DDPG"
+
+---
+name: "reach_random_init_td3"
+path: "outcomes/cluster/reach_task_random"
+repetitions: 20
+
+params:
+  env_name: "ReachEnv-v4"
+  total_steps: 5_000_000
+  algorithm: "TD3"
