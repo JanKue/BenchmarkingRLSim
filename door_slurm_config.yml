@@ -10,12 +10,13 @@ mem-per-cpu: 6000
 time: 4320  # in minutes
 
 ---
-name: "door_open_sac_reward_tuning"
+name: "door_open_sac_tuning_noise"
 path: "outcomes/cluster/door_open_task"
 repetitions: 1
 
 params:
   total_steps: 5_000_000
 
-list:
-  env_version: [26, 27, 28]
+grid:
+  env_version: [26, 27]
+  learning_rate: [0.0003, 0.001, 0.0001]
