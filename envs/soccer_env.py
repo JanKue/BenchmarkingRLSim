@@ -88,10 +88,10 @@ class SoccerEnv(GymEnvWrapper):
         tcp_ball_dist, _ = obj_distance(tcp_pos, ball_pos)
         ball_goal_dist, _ = obj_distance(ball_pos, goal_center_pos)
 
-        ball_touching_penalty = 20 * tcp_ball_dist if tcp_ball_dist > 0.1 else 0
+        ball_touching_penalty = 15 * tcp_ball_dist if tcp_ball_dist > 0.1 else 0
         behind_goal_penalty = 100 if ball_pos[1] > 0.44 else 0
 
-        reward = - 25 * ball_goal_dist - ball_touching_penalty - behind_goal_penalty
+        reward = - 50 * ball_goal_dist - ball_touching_penalty - behind_goal_penalty
 
         return np.minimum(reward, 0)
 

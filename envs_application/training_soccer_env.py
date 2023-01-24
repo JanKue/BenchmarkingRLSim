@@ -30,4 +30,4 @@ def main(env_name: str, path: str, total_steps: int = 2_500_000, seed: int = 1, 
 
 
 if __name__ == "__main__":
-    main(env_name="SoccerEnv-v3", path="../outcomes/soccer_sac/random")
+    main(env_name="SoccerEnv-v3", path="../outcomes/local/soccer_random/sac")
