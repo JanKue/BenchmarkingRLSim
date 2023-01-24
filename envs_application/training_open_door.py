@@ -14,7 +14,7 @@ def main(env_name: str, path: str, total_steps: int = 3_000_000, seed: int = 1, 
     # env = make_vec_env(env_name, n_envs=8)  # vector env (PPO)
     eval_env = gym.make(env_name)  # regular env for evaluation
     logger = configure(path, ["stdout", "tensorboard"])
-    model_path = path + "final_model"
+    model_path = path + "/final_model"
     eval_path = path
 
     # print("begin checking env")
