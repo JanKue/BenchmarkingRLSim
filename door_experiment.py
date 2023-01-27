@@ -17,7 +17,9 @@ class DoorExperiment(experiment.AbstractExperiment):
         env_version = params['env_version']
         env_name = "DoorOpenEnv-v" + str(env_version)
 
-        delay = (params['learning_rate'] / 0.0001 - 1) * 60 + (env_version - 26) * 30
+        lr = params['learning_rate']
+        lrd = 0 if lr == 0.0003 else 5 if lr == 0.001 else 10 if lr == 0.005 else 15
+        delay = (lrd + rep) * 60 + (env_version - 26) * 30
         time.sleep(delay)
 
         training_open_door.main(env_name=env_name, path=cw_config['path'], total_steps=params['total_steps'],
