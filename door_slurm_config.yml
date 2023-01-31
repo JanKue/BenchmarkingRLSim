@@ -10,13 +10,10 @@ mem-per-cpu: 6000
 time: 4320  # in minutes
 
 ---
-name: "door_open_sac_lr_tuning_noise"
+name: "door_open_sac_experiment"
 path: "outcomes/cluster/door_open_task"
-repetitions: 3
+repetitions: 20
 
 params:
   total_steps: 5_000_000
-
-grid:
-  env_version: [26, 27]
-  learning_rate: [0.0003, 0.001, 0.005, 0.01]
+  env_name: "DoorOpenEnv-v27"

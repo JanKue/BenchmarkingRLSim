@@ -1,7 +1,7 @@
 import gym
 import numpy as np
 
-from stable_baselines3 import SAC, PPO, TD3, A2C
+from stable_baselines3 import SAC, PPO, DDPG, TD3, A2C
 from stable_baselines3.common.env_checker import check_env
 from stable_baselines3.common.env_util import make_vec_env
 from stable_baselines3.common.logger import configure
@@ -10,7 +10,9 @@ from stable_baselines3.common.noise import NormalActionNoise
 import __init__
 
 
-def main(env_name: str, path: str, total_steps: int = 3_000_000, seed: int = 1, learning_rate: float = 3e-4, **kwargs):
+algorithms_dict = {"SAC": SAC, "PPO": PPO, "DDPG": DDPG, "TD3": TD3, "A2C": A2C}
+
+def main(env_name: str, path: str, total_steps: int = 3_000_000, algorithm : str = "SAC", seed: int = 1, learning_rate: float = 3e-4, **kwargs):
 
     # setup
     env = gym.make(env_name)  # regular env (SAC)
@@ -27,6 +29,8 @@ def main(env_name: str, path: str, total_steps: int = 3_000_000, seed: int = 1, 
     # print("begin checking env")
     # check_env(env)
     # print("finished checking env")
+
+    selected_algorithm = algorithms_dict[algorithm]
 
     model = SAC("MlpPolicy", env=env, verbose=1, action_noise=action_noise, seed=seed, learning_rate=learning_rate)
     # model = SAC.load(path=model_path, env=env, force_reset=True)

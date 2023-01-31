@@ -14,16 +14,11 @@ class DoorExperiment(experiment.AbstractExperiment):
 
 
         params = cw_config['params']
-        env_version = params['env_version']
-        env_name = "DoorOpenEnv-v" + str(env_version)
+        rep_path = cw_config['path'] + "/rep" + str(rep)
 
-        lr = params['learning_rate']
-        lrd = 0 if lr == 0.0003 else 5 if lr == 0.001 else 10 if lr == 0.005 else 15
-        delay = (lrd + rep) * 60 + (env_version - 26) * 30
-        time.sleep(delay)
+        time.sleep(rep * 30)
 
-        training_open_door.main(env_name=env_name, path=cw_config['path'], total_steps=params['total_steps'],
-                                learning_rate=params['learning_rate'], seed=rep)
+        training_open_door.main(env_name=params['env_name'], path=rep_path, total_steps=params['total_steps'], seed=rep)
 
         return
 
