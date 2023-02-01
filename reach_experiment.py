@@ -16,8 +16,7 @@ class ReachExperiment(experiment.AbstractExperiment):
         params = cw_config['params']
         rep_path = cw_config['path'] + "/rep" + str(rep)
 
-        add_delay = 30 if params['algorithm'] == "TD3" else 0
-        time.sleep(rep * 60 + add_delay)
+        time.sleep(rep * 30)
 
         training_reach.main(env_name=params['env_name'], path=rep_path, algorithm=params['algorithm'],
                             total_steps=params['total_steps'], seed=rep)
