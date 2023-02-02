@@ -9,7 +9,7 @@ def main():
     # create scene and environment
 
     env = gym.make("SoccerEnv-v0")
-    file_path = "../outcomes/soccer_sac/static/final_model.zip"
+    file_path = "../outcomes/local/soccer_sac/static/final_model"
 
     # load trained model and run it
 

@@ -8,13 +8,13 @@ def main():
 
     # create scene and environment
 
-    env = gym.make("ReachEnv-v3")
-    file_path = "../outcomes/evaluation/simple_reach/ppo/best_model"
-    file_path = "../outcomes/models/ppo_simple_reach_randomgoal"
+    env = gym.make("ReachEnv-v5")
+    file_path = "../outcomes/local/evaluation/simple_reach/sac/best_model_random_init.zip"
+    # file_path = "../outcomes/models/ppo_simple_reach_randomgoal"
 
     # load trained model and run it
 
-    model = PPO.load(path=file_path, env=env)
+    model = SAC.load(path=file_path, env=env)
     print("Loaded model.")
 
     obs = env.reset()
