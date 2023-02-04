@@ -12,13 +12,14 @@ class DoorExperiment(experiment.AbstractExperiment):
 
     def run(self, cw_config: dict, rep: int, logger: cw_logging.LoggerArray) -> None:
 
-
         params = cw_config['params']
         rep_path = cw_config['path'] + "/rep" + str(rep)
 
-        time.sleep(rep * 30)
+        add_delay = 60 if params['algorithm'] == 'TD3' else 0
+        time.sleep(rep * (30 + add_delay))
 
-        training_open_door.main(env_name=params['env_name'], path=rep_path, total_steps=params['total_steps'], seed=rep)
+        training_open_door.main(env_name=params['env_name'], path=rep_path, total_steps=params['total_steps'],
+                                algorithm=params['algorithm'], seed=rep)
 
         return
 

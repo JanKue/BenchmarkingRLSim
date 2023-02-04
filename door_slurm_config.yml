@@ -6,14 +6,25 @@ partition: "single"
 num_parallel_jobs: 100  # max number of jobs executed in parallel
 ntasks: 1  # leave that like it is
 cpus-per-task: 1
-mem-per-cpu: 6000
+mem-per-cpu: 4000
 time: 4320  # in minutes
 
 ---
-name: "door_open_sac_experiment"
+name: "door_open_ddpg_experiment"
 path: "outcomes/cluster/door_open_task"
 repetitions: 20
 
 params:
   total_steps: 5_000_000
   env_name: "DoorOpenEnv-v27"
+  algorithm: "DDPG"
+
+---
+name: "door_open_td3_experiment"
+path: "outcomes/cluster/door_open_task"
+repetitions: 20
+
+params:
+  total_steps: 5_000_000
+  env_name: "DoorOpenEnv-v27"
+  algorithm: "TD3"

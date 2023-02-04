@@ -12,7 +12,8 @@ import __init__
 
 algorithms_dict = {"SAC": SAC, "PPO": PPO, "DDPG": DDPG, "TD3": TD3, "A2C": A2C}
 
-def main(env_name: str, path: str, total_steps: int = 3_000_000, algorithm : str = "SAC", seed: int = 1, learning_rate: float = 3e-4, **kwargs):
+
+def main(env_name: str, path: str, total_steps: int = 3_000_000, algorithm : str = "SAC", seed: int = 1, **kwargs):
 
     # setup
     env = gym.make(env_name)  # regular env (SAC)
@@ -32,7 +33,7 @@ def main(env_name: str, path: str, total_steps: int = 3_000_000, algorithm : str
 
     selected_algorithm = algorithms_dict[algorithm]
 
-    model = SAC("MlpPolicy", env=env, verbose=1, action_noise=action_noise, seed=seed, learning_rate=learning_rate)
+    model = selected_algorithm("MlpPolicy", env=env, verbose=1, action_noise=action_noise, seed=seed)
     # model = SAC.load(path=model_path, env=env, force_reset=True)
     model.set_logger(logger)
     model.learn(total_timesteps=total_steps,
