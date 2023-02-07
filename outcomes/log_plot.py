@@ -7,6 +7,9 @@ import tikzplotlib as tpl
 from scipy.ndimage import gaussian_filter1d
 
 
+selected_scalar = 'eval/success_rate'
+
+
 def parse_tensorboard(filepath):
 
     ea = event_accumulator.EventAccumulator(
@@ -14,44 +17,39 @@ def parse_tensorboard(filepath):
         size_guidance={event_accumulator.SCALARS: 0},
     )
     _absorb_print = ea.Reload()
-    scalars = ea.Tags()['scalars']
+    # scalars = ea.Tags()['scalars']
     scalars = ['eval/success_rate', 'eval/mean_reward']
 
-    return {k: pd.DataFrame(ea.Scalars(k)) for k in scalars}
+    return pd.DataFrame(ea.Scalars(selected_scalar))
 
 
 def get_dataframes(glob_path):
 
     paths = glob.glob(glob_path, recursive=True)
     dfs = [parse_tensorboard(path) for path in paths]
-    success_dfs = [result['eval/success_rate'].drop(labels='wall_time', axis=1) for result in dfs]
-    reward_dfs = [result['eval/mean_reward'].drop(labels='wall_time', axis=1) for result in dfs]
+    extracted_dfs = [df.drop(labels='wall_time', axis=1) for df in dfs]
+    concat_dfs = pd.concat(extracted_dfs)
+    # concat_dfs = concat_dfs[concat_dfs['step'] % 20_000 == 0]  # only keep every 2nd eval step
 
-    success_concat = pd.concat(success_dfs)
-    # success_concat = success_concat[success_concat['step'] % 20_000 == 0]  # only keep every 2nd eval step
-
-    reward_concat = pd.concat(reward_dfs)
-    # reward_concat = reward_concat[reward_concat['step'] % 20_000 == 0]  # only keep every 2nd eval step
-
-    return success_concat, reward_concat
+    return concat_dfs
 
 
 def main():
 
     plt.close('all')
 
-    sac_success_concat, sac_reward_concat = get_dataframes("./cluster/reach_task_random/reach_random_init_sac/**/events.*")
-    ppo_success_concat, ppo_reward_concat = get_dataframes("./cluster/reach_task_random/reach_random_init_ppo_old/**/events.*")
-    ddpg_success_concat, ddpg_reward_concat = get_dataframes("./cluster/reach_task_random/reach_random_init_ddpg/**/events.*")
-    td3_success_concat, td3_reward_concat = get_dataframes("./cluster/reach_task_random/reach_random_init_td3/**/events.*")
+    sac_data_concat = get_dataframes("./cluster/door_open_task/door_open_sac_experiment/**/events.*")
+    ppo_data_concat = get_dataframes("./cluster/door_open_task/door_open_ppo_experiment/**/events.*")
+    ddpg_data_concat = get_dataframes("./cluster/door_open_task/door_open_ddpg_experiment/**/events.*")
+    td3_data_concat = get_dataframes("./cluster/door_open_task/door_open_td3_experiment/**/events.*")
 
     plt.figure()
     plt.xlim(0, 5e6)
-    plt.ylim(0, 1)
-    sns.lineplot(sac_success_concat, x='step', y='value', estimator='mean', errorbar=('sd', 2))
-    sns.lineplot(ppo_success_concat, x='step', y='value', estimator='mean', errorbar=('sd', 2))
-    sns.lineplot(ddpg_success_concat, x='step', y='value', estimator='mean', errorbar=('sd', 2))
-    sns.lineplot(td3_success_concat, x='step', y='value', estimator='mean', errorbar=('sd', 2))
+    # plt.ylim(0, 1)
+    sns.lineplot(sac_data_concat, x='step', y='value', estimator='mean', errorbar=('sd', 1), label='SAC')
+    sns.lineplot(ppo_data_concat, x='step', y='value', estimator='mean', errorbar=('sd', 1), label='PPO')
+    sns.lineplot(ddpg_data_concat, x='step', y='value', estimator='mean', errorbar=('sd', 1), label='DDPG')
+    sns.lineplot(td3_data_concat, x='step', y='value', estimator='mean', errorbar=('sd', 1), label='TD3')
 
     # grouped_df = concat_df.groupby(concat_df.index)
 
@@ -59,9 +57,9 @@ def main():
     #     df['value'] = gaussian_filter1d(df['value'], sigma=2)
     #     sns.lineplot(data=df, x='step', y='value').set_title('TD3: success rate')
 
-    # plt.savefig(fname="./plots/reach_td3_success_rates.svg")
-    # tpl.clean_figure()
-    # tpl.save(filepath="./plots/reach_td3_success_rates.tex")
+    plt.savefig(fname="./plots/door_success_rates.svg")
+    tpl.clean_figure()
+    tpl.save(filepath="./plots/door_success_rates.tex")
 
     plt.show()
 
