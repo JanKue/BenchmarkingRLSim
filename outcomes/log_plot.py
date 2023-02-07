@@ -11,7 +11,6 @@ selected_scalar = 'eval/success_rate'
 
 
 def parse_tensorboard(filepath):
-
     ea = event_accumulator.EventAccumulator(
         filepath,
         size_guidance={event_accumulator.SCALARS: 0},
@@ -23,19 +22,29 @@ def parse_tensorboard(filepath):
     return pd.DataFrame(ea.Scalars(selected_scalar))
 
 
-def get_dataframes(glob_path):
+def get_dataframes(glob_path, smooth=False):
 
     paths = glob.glob(glob_path, recursive=True)
     dfs = [parse_tensorboard(path) for path in paths]
     extracted_dfs = [df.drop(labels='wall_time', axis=1) for df in dfs]
-    concat_dfs = pd.concat(extracted_dfs)
+
+    if smooth:
+        def smoothing(df):
+            df['value'] = gaussian_filter1d(df['value'], sigma=2)
+            return df
+
+        smoothed_dfs = [smoothing(df) for df in extracted_dfs]
+        concat_dfs = pd.concat(smoothed_dfs)
+
+    else:
+        concat_dfs = pd.concat(extracted_dfs)
+
     # concat_dfs = concat_dfs[concat_dfs['step'] % 20_000 == 0]  # only keep every 2nd eval step
 
     return concat_dfs
 
 
 def main():
-
     plt.close('all')
 
     sac_data_concat = get_dataframes("./cluster/door_open_task/door_open_sac_experiment/**/events.*")
@@ -45,7 +54,7 @@ def main():
 
     plt.figure()
     plt.xlim(0, 5e6)
-    # plt.ylim(0, 1)
+    plt.ylim(0, 1)
     sns.lineplot(sac_data_concat, x='step', y='value', estimator='mean', errorbar=('sd', 1), label='SAC')
     sns.lineplot(ppo_data_concat, x='step', y='value', estimator='mean', errorbar=('sd', 1), label='PPO')
     sns.lineplot(ddpg_data_concat, x='step', y='value', estimator='mean', errorbar=('sd', 1), label='DDPG')
@@ -57,13 +66,12 @@ def main():
     #     df['value'] = gaussian_filter1d(df['value'], sigma=2)
     #     sns.lineplot(data=df, x='step', y='value').set_title('TD3: success rate')
 
-    plt.savefig(fname="./plots/door_success_rates.svg")
+    plt.savefig(fname="./plots/door_success_rates_smooth.svg")
     tpl.clean_figure()
-    tpl.save(filepath="./plots/door_success_rates.tex")
+    tpl.save(filepath="./plots/door_success_rates_smooth.tex")
 
     plt.show()
 
 
 if __name__ == '__main__':
     main()
-
