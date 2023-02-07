@@ -1,20 +1,40 @@
 ---
 # SLURM BwUniCluster2.0
 name: "SLURM"  # MUST BE "SLURM"
-job-name: "door_open_task_experiment"  # this will be the experiment's name in slurm
+job-name: "door_open_easy"  # this will be the experiment's name in slurm
 partition: "single"
 num_parallel_jobs: 100  # max number of jobs executed in parallel
 ntasks: 1  # leave that like it is
-cpus-per-task: 8
+cpus-per-task: 1
 mem-per-cpu: 4000
-time: 2880  # in minutes
+time: 4320  # in minutes
 
 ---
-name: "door_open_ppo_experiment"
-path: "outcomes/cluster/door_open_task"
+name: "door_open_easy_sac_experiment"
+path: "outcomes/cluster/door_open_task_easy"
 repetitions: 20
 
 params:
   total_steps: 5_000_000
   env_name: "DoorOpenEnv-v27"
-  algorithm: "PPO"
+  algorithm: "SAC"
+
+---
+name: "door_open_easy_ddpg_experiment"
+path: "outcomes/cluster/door_open_task_easy"
+repetitions: 20
+
+params:
+  total_steps: 5_000_000
+  env_name: "DoorOpenEnv-v27"
+  algorithm: "DDPG"
+
+---
+name: "door_open_easy_td3_experiment"
+path: "outcomes/cluster/door_open_task_easy"
+repetitions: 20
+
+params:
+  total_steps: 5_000_000
+  env_name: "DoorOpenEnv-v27"
+  algorithm: "TD3"

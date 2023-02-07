@@ -15,8 +15,9 @@ class DoorExperiment(experiment.AbstractExperiment):
         params = cw_config['params']
         rep_path = cw_config['path'] + "/rep" + str(rep)
 
-        # add_delay = 60 if params['algorithm'] == 'TD3' else 0
-        time.sleep(rep * 30)
+        add_delays = {'DDPG': 0, 'TD3': 20, 'SAC': 40, 'PPO': 60}
+        add_delay = add_delays[params['algorithm']]
+        time.sleep((rep + add_delay) * 30)
 
         training_open_door.main(env_name=params['env_name'], path=rep_path, total_steps=params['total_steps'],
                                 algorithm=params['algorithm'], seed=rep)
