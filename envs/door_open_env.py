@@ -41,7 +41,7 @@ class DoorOpenEnv(GymEnvWrapper):
         scene.add_object(door_objects)
 
         self.hinge_goal = -np.pi/2
-        self.success_threshold = np.pi/6
+        self.success_threshold = np.pi/3
 
         self.observation_space = Box(low=-np.inf, high=np.inf, shape=(47,), dtype=np.float64)
         self.action_space = self.controller.action_space()
@@ -119,5 +119,3 @@ class DoorOpenEnv(GymEnvWrapper):
         hinge_difference = hinge_pos - self.hinge_goal
         success = hinge_difference < self.success_threshold
         return {"is_success": success}
-
-
