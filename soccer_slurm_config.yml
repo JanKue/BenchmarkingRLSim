@@ -6,14 +6,25 @@ partition: "single"
 num_parallel_jobs: 100  # max number of jobs executed in parallel
 ntasks: 1  # leave that like it is
 cpus-per-task: 1
-mem-per-cpu: 6000
+mem-per-cpu: 4000
 time: 4320  # in minutes
 
 ---
 name: "soccer_random_sac"
-path: "outcomes/cluster/soccer_task"
-repetitions: 5
+path: "outcomes/cluster/soccer_task_experiment"
+repetitions: 20
 
 params:
   env_name: "SoccerEnv-v3"
-  total_steps: 6_000_000
+  total_steps: 5_000_000
+  algorithm: "SAC"
+
+---
+name: "soccer_random_ddpg"
+path: "outcomes/cluster/soccer_task_experiment"
+repetitions: 20
+
+params:
+  env_name: "SoccerEnv-v3"
+  total_steps: 5_000_000
+  algorithm: "DDPG"
