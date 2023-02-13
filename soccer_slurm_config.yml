@@ -28,3 +28,13 @@ params:
   env_name: "SoccerEnv-v3"
   total_steps: 5_000_000
   algorithm: "DDPG"
+
+---
+name: "soccer_random_td3"
+path: "outcomes/cluster/soccer_task_experiment"
+repetitions: 20
+
+params:
+  env_name: "SoccerEnv-v3"
+  total_steps: 5_000_000
+  algorithm: "TD3"
