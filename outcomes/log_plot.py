@@ -7,7 +7,7 @@ import tikzplotlib as tpl
 from scipy.ndimage import gaussian_filter1d
 
 
-selected_scalar = 'eval/success_rate'
+selected_scalar = 'eval/mean_reward'
 
 
 def parse_tensorboard(filepath):
@@ -47,10 +47,10 @@ def get_dataframes(glob_path, smooth=False):
 def main():
     plt.close('all')
 
-    ddpg_data_concat = get_dataframes("./cluster/reach_task_random/reach_random_init_ddpg/**/events.*")
-    td3_data_concat = get_dataframes("./cluster/reach_task_random/reach_random_init_td3/**/events.*")
-    sac_data_concat = get_dataframes("./cluster/reach_task_random/reach_random_init_sac/**/events.*")
-    ppo_data_concat = get_dataframes("./cluster/reach_task_random/reach_random_init_ppo_old/**/events.*")
+    ddpg_data_concat = get_dataframes("./cluster/soccer_task_experiment/soccer_random_ddpg/**/events.*")
+    td3_data_concat = get_dataframes("./cluster/soccer_task_experiment/soccer_random_td3/**/events.*")
+    sac_data_concat = get_dataframes("./cluster/soccer_task_experiment/soccer_random_sac/**/events.*")
+    ppo_data_concat = get_dataframes("./cluster/soccer_task_experiment/soccer_random_ppo/**/events.*")
 
     plt.figure()
     plt.grid(visible=True)
@@ -70,9 +70,9 @@ def main():
     #     df['value'] = gaussian_filter1d(df['value'], sigma=2)
     #     sns.lineplot(data=df, x='step', y='value').set_title('TD3: success rate')
 
-    plt.savefig(fname="./plots/reach_success_rates.svg")
+    plt.savefig(fname="./plots/soccer_mean_rewards.svg")
     tpl.clean_figure()
-    tpl.save(filepath="./plots/reach_success_rates.tex")
+    tpl.save(filepath="./plots/soccer_mean_rewards.tex")
 
     plt.show()
 

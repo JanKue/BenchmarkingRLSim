@@ -103,7 +103,7 @@ register(
 register(
     id="SoccerEnv-v0",
     entry_point="envs.soccer_env:SoccerEnv",
-    max_episode_steps=250,
+    max_episode_steps=500,
     kwargs={"n_substeps": 10,
             "random_init": False,
             "render": True,
@@ -113,7 +113,7 @@ register(
 register(
     id="SoccerEnv-v1",
     entry_point="envs.soccer_env:SoccerEnv",
-    max_episode_steps=250,
+    max_episode_steps=500,
     kwargs={"n_substeps": 10,
             "random_init": False,
             "render": False,

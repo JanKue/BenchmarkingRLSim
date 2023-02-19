@@ -1,0 +1,20 @@
+---
+# SLURM BwUniCluster2.0
+name: "SLURM"  # MUST BE "SLURM"
+job-name: "soccer_task_static_ppo"  # this will be the experiment's name in slurm
+partition: "single"
+num_parallel_jobs: 100  # max number of jobs executed in parallel
+ntasks: 1  # leave that like it is
+cpus-per-task: 8
+mem-per-cpu: 4000
+time: 2880  # in minutes
+
+---
+name: "soccer_random_ppo"
+path: "outcomes/cluster/soccer_task_experiment"
+repetitions: 20
+
+params:
+  env_name: "SoccerEnv-v1"
+  total_steps: 5_000_000
+  algorithm: "PPO"
