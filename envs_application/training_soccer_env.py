@@ -22,9 +22,9 @@ def main(env_name: str, path: str, algorithm: str, total_steps: int = 2_500_000,
     # setup envs, model
     if algorithm == 'PPO':
         env = make_vec_env(env_name, n_envs=8, seed=seed)  # vector env (PPO)
-        env = VecNormalize(venv=env, norm_obs=True, norm_reward=True)
+        env = VecNormalize(venv=env, norm_obs=True, norm_reward=True, training=True)
         eval_env = make_vec_env(env_name, n_envs=1)
-        eval_env = VecNormalize(venv=eval_env, norm_reward=False, training=False)
+        eval_env = VecNormalize(venv=eval_env, norm_obs=True, norm_reward=False, training=False)
 
         model = PPO("MlpPolicy", env=env, verbose=1, seed=seed)
 
