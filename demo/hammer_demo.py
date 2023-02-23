@@ -1,5 +1,5 @@
 from alr_sim.sims.SimFactory import SimRepository
-from envs.objects.hammer_objects import HammerObjects
+from objects.hammer_objects import HammerObjects
 
 if __name__ == '__main__':
 

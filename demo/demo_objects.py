@@ -1,9 +1,5 @@
-import numpy as np
 from alr_sim.sims.SimFactory import SimRepository
 import alr_sim.sims.universal_sim.PrimitiveObjects as PrimObj
-from envs.objects.hammer_objects import HammerObjects
-from envs.objects.door_objects import DoorObjects
-from envs.objects.soccer_objects import SoccerObjects
 
 if __name__ == '__main__':
 

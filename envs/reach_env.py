@@ -61,8 +61,6 @@ class ReachEnv(GymEnvWrapper):
         self.start()
         self.orig_init_qpos = self.scene.init_qpos
 
-    _DEFAULT_VALUE_AT_MARGIN = 0.1
-
     def get_observation(self) -> np.ndarray:
         goal_pos = self.scene.get_obj_pos(self.goal)
         tcp_pos = self.robot.current_c_pos
@@ -73,7 +71,6 @@ class ReachEnv(GymEnvWrapper):
         return np.concatenate([robot_state, env_state])
 
     def get_reward(self):
-        _TARGET_RADIUS = 0.05
         tcp = self.robot.current_c_pos
         target = self.scene.get_obj_pos(self.goal)
 

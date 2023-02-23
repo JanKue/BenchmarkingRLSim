@@ -4,7 +4,7 @@ from alr_sim.gyms.gym_controllers import GymTorqueController
 from alr_sim.gyms.gym_env_wrapper import GymEnvWrapper
 from alr_sim.sims.SimFactory import SimRepository
 
-from envs.objects.door_objects import DoorObjects
+from objects.door_objects import DoorObjects
 
 from gym.spaces import Box
 
@@ -42,6 +42,7 @@ class DoorOpenEnv(GymEnvWrapper):
 
         self.hinge_goal = -np.pi/2
         self.success_threshold = np.pi/3
+        self.target_box_size = [0.08, 0.08, 0.025]
 
         self.observation_space = Box(low=-np.inf, high=np.inf, shape=(47,), dtype=np.float64)
         self.action_space = self.controller.action_space()
@@ -63,12 +64,11 @@ class DoorOpenEnv(GymEnvWrapper):
         hand_target_pos = self.scene.sim.data.get_geom_xpos("hand_target")
         hand_target_diff = tcp_pos - hand_target_pos
         hand_target_distance = np.linalg.norm(hand_target_diff)
-        cylinder_size = [0.08, 0.08, 0.025]
         hinge_pos = self.scene.sim.data.get_joint_qpos("doorjoint")
         hinge_difference = hinge_pos - self.hinge_goal
 
         env_state = np.concatenate([tcp_pos, handle_pos, [tcp_handle_distance],
-                                    hand_target_pos, hand_target_diff, [hand_target_distance], cylinder_size,
+                                    hand_target_pos, hand_target_diff, [hand_target_distance], self.target_box_size,
                                     [hinge_pos, self.hinge_goal, hinge_difference]])
 
         return np.concatenate([robot_state, env_state])
@@ -78,12 +78,11 @@ class DoorOpenEnv(GymEnvWrapper):
         tcp_pos = self.robot.current_c_pos
         tcp_quat = self.robot.current_c_quat
 
-        # guide the end effector to a cylinder between handle and door
+        # guide the end effector to a box between handle and door
         hand_target_pos = self.scene.sim.data.get_geom_xpos("hand_target")
         hand_target_diff = tcp_pos - hand_target_pos
         hand_target_distance = np.linalg.norm(hand_target_diff)
-        cylinder_size = [0.08, 0.08, 0.025]
-        hand_in_cylinder = np.all(np.abs(hand_target_diff) < cylinder_size)
+        hand_in_cylinder = np.all(np.abs(hand_target_diff) < self.target_box_size)
         hand_target_penalty = hand_target_distance if not hand_in_cylinder else 0
 
         # calculate door opening angle and compare to target value
@@ -98,7 +97,7 @@ class DoorOpenEnv(GymEnvWrapper):
 
         hinge_component = exp_hinge_diff if self.reward_hinge_exp else self.reward_hinge_linear * hinge_difference
 
-        reward = self.reward_multiplier * (- hinge_component - self.reward_hand_penalty_ratio * hand_target_penalty)
+        reward = - self.reward_multiplier * (hinge_component + self.reward_hand_penalty_ratio * hand_target_penalty)
 
         return np.minimum(reward, 0)
 
@@ -113,6 +112,13 @@ class DoorOpenEnv(GymEnvWrapper):
 
     def _reset_env(self):
         self.scene.reset()
+
+    def reset(self):
+        self.terminated = False
+        self.env_step_counter = 0
+        self.episode += 1
+        self._reset_env()
+        return self.get_observation()
 
     def debug_msg(self) -> dict:
         hinge_pos = self.scene.sim.data.get_joint_qpos("doorjoint")

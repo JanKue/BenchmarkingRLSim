@@ -20,7 +20,7 @@ def main():
     while True:
         action, _states = model.predict(obs)
         obs, rewards, done, info = env.step(action)
-        # print("action:", action, "/ observation:", obs, "/ reward:", rewards, "/ info:", info)
+        print("action:", action, "/ observation:", obs, "/ reward:", rewards, "/ info:", info)
         if done:
             obs = env.reset()
 

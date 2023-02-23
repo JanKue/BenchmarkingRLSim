@@ -4,7 +4,7 @@ from alr_sim.gyms.gym_controllers import GymTorqueController
 from alr_sim.gyms.gym_env_wrapper import GymEnvWrapper
 from alr_sim.sims.SimFactory import SimRepository
 
-from envs.objects.hammer_objects import HammerObjects
+from objects.hammer_objects import HammerObjects
 
 from gym.spaces import Box
 
