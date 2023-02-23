@@ -48,4 +48,4 @@ def main(env_name: str, path: str, total_steps: int = 3_000_000, algorithm: str 
 
 
 if __name__ == "__main__":
-    main(env_name="DoorOpenEnv-v1", path="../outcomes/local/door_open/ddpg", algorithm='DDPG')
+    main(env_name="DoorOpenEnv-v3", path="../outcomes/local/door_open/ddpg", algorithm='DDPG')
