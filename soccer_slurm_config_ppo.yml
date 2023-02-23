@@ -11,10 +11,10 @@ time: 2880  # in minutes
 
 ---
 name: "soccer_random_ppo"
-path: "outcomes/cluster/soccer_task_experiment"
-repetitions: 20
+path: "outcomes/cluster/soccer_fixed_experiment"
+repetitions: 10
 
 params:
-  env_name: "SoccerEnv-v1"
+  env_name: "SoccerEnv-v3"
   total_steps: 5_000_000
   algorithm: "PPO"

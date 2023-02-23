@@ -6,7 +6,7 @@ from alr_sim.gyms.gym_utils.helpers import obj_distance
 from alr_sim.sims.SimFactory import SimRepository
 from alr_sim.sims.universal_sim.PrimitiveObjects import Sphere
 
-from envs.objects.soccer_objects import SoccerObjects
+from objects.soccer_objects import SoccerObjects
 
 from gym.spaces import Box
 
@@ -37,7 +37,7 @@ class SoccerEnv(GymEnvWrapper):
         )
 
         self.random_ball_pos = random_ball_pos
-        self.ball_pos_space = Box(low=np.array([0.2, -0.5, 0.01]), high=np.array([0.6, 0.3, 0.01]))
+        self.ball_pos_space = Box(low=np.array([0.2, -0.5, 0.01]), high=np.array([0.6, 0.3, 0.01]), dtype=np.float64)
         self.soccer_ball = Sphere(name="soccer_ball", rgba=[0.8, 0.8, 0.8, 1],
                              init_pos=[0.4, -0.1, 0.1], init_quat=[0, 0, 0, 0],
                              size=[0.026], mass=0.04)
@@ -53,7 +53,7 @@ class SoccerEnv(GymEnvWrapper):
 
         self.goal_bounds_min = np.array([0.3, 0.44, -0.02])
         self.goal_bounds_max = np.array([0.5, 0.54, 0.13])
-        self.goal_box = Box(low=np.array([0.3, 0.44, -0.02]), high=np.array([0.5, 0.54, 0.13]))
+        self.goal_box = Box(low=np.array([0.3, 0.44, -0.02]), high=np.array([0.5, 0.54, 0.13]), dtype=np.float64)
 
         self.start()
 
@@ -112,6 +112,13 @@ class SoccerEnv(GymEnvWrapper):
             self.scene.reset([new_ball])
         else:
             self.scene.reset()
+
+    def reset(self):
+        self.terminated = False
+        self.env_step_counter = 0
+        self.episode += 1
+        self._reset_env()
+        return self.get_observation()
 
     def debug_msg(self) -> dict:
         ball_pos = self.scene.get_obj_pos(self.soccer_ball)

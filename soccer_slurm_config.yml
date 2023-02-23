@@ -1,7 +1,7 @@
 ---
 # SLURM BwUniCluster2.0
 name: "SLURM"  # MUST BE "SLURM"
-job-name: "soccer_task_static"  # this will be the experiment's name in slurm
+job-name: "soccer_task_random"  # this will be the experiment's name in slurm
 partition: "single"
 num_parallel_jobs: 100  # max number of jobs executed in parallel
 ntasks: 1  # leave that like it is
@@ -11,30 +11,30 @@ time: 2880  # in minutes
 
 ---
 name: "soccer_random_ddpg"
-path: "outcomes/cluster/soccer_task_experiment"
-repetitions: 20
+path: "outcomes/cluster/soccer_fixed_experiment"
+repetitions: 10
 
 params:
-  env_name: "SoccerEnv-v1"
+  env_name: "SoccerEnv-v3"
   total_steps: 5_000_000
   algorithm: "DDPG"
 
 ---
 name: "soccer_random_td3"
-path: "outcomes/cluster/soccer_task_experiment"
-repetitions: 20
+path: "outcomes/cluster/soccer_fixed_experiment"
+repetitions: 10
 
 params:
-  env_name: "SoccerEnv-v1"
+  env_name: "SoccerEnv-v3"
   total_steps: 5_000_000
   algorithm: "TD3"
 
 ---
 name: "soccer_random_sac"
-path: "outcomes/cluster/soccer_task_experiment"
-repetitions: 20
+path: "outcomes/cluster/soccer_fixed_experiment"
+repetitions: 10
 
 params:
-  env_name: "SoccerEnv-v1"
+  env_name: "SoccerEnv-v3"
   total_steps: 5_000_000
   algorithm: "SAC"
