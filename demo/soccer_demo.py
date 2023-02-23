@@ -1,6 +1,10 @@
 from alr_sim.sims.SimFactory import SimRepository
 import alr_sim.sims.universal_sim.PrimitiveObjects as PrimObj
-from envs.objects.soccer_objects import SoccerObjects
+from objects.soccer_objects import SoccerObjects
+
+from gym.spaces.box import Box
+
+import numpy as np
 
 if __name__ == '__main__':
 
@@ -28,6 +32,30 @@ if __name__ == '__main__':
         visual_only=False
     )
 
+    corner1 = PrimObj.Sphere(
+        name="corner1",
+        init_pos=[0.3, 0.44, 0.01],
+        init_quat=[0, 0, 0, 0],
+        rgba=[1, 0, 0, 1],
+        size=[0.02],
+        mass=0.04,
+        static=True,
+        visual_only=True
+    )
+
+    corner2 = PrimObj.Sphere(
+        name="corner2",
+        init_pos=[0.5, 0.54, 0.13],
+        init_quat=[0, 0, 0, 0],
+        rgba=[1, 0, 0, 1],
+        size=[0.02],
+        mass=0.04,
+        static=True,
+        visual_only=True
+    )
+
+    goal_box = Box(low=np.array([0.3, 0.44, 0.01]), high=np.array([0.5, 0.54, 0.13]))
+
     soccer_objects = SoccerObjects(name="soccer-objects")
 
     # goal line: y = 0.44, back: y = 0.54
@@ -36,7 +64,7 @@ if __name__ == '__main__':
 
 
     sim_factory = SimRepository.get_factory("mujoco")
-    scene = sim_factory.create_scene(object_list=[soccer_objects, ball], random_env=True)
+    scene = sim_factory.create_scene(object_list=[soccer_objects, ball, corner1, corner2], random_env=True)
     robot = sim_factory.create_robot(scene)
     scene.start()
 
