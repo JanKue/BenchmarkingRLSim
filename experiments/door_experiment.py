@@ -1,7 +1,7 @@
 from cw2 import experiment, cw_error, cluster_work
 from cw2.cw_data import cw_logging
 
-from envs_application import training_open_door
+from training import training_open_door
 import time
 
 

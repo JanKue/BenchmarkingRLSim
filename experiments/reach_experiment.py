@@ -3,7 +3,7 @@ import time
 from cw2 import experiment, cw_error, cluster_work
 from cw2.cw_data import cw_logging
 
-from envs_application import training_reach
+from training import training_reach
 
 
 class ReachExperiment(experiment.AbstractExperiment):
