@@ -7,7 +7,7 @@ import tikzplotlib as tpl
 from scipy.ndimage import gaussian_filter1d
 
 
-selected_scalar = 'eval/mean_reward'
+selected_scalar = 'eval/success_rate'
 
 
 def parse_tensorboard(filepath):
@@ -30,7 +30,7 @@ def get_dataframes(glob_path, smooth=False):
 
     if smooth:
         def smoothing(df):
-            df['value'] = gaussian_filter1d(df['value'], sigma=2)
+            df['value'] = gaussian_filter1d(df['value'], sigma=1)
             return df
 
         smoothed_dfs = [smoothing(df) for df in extracted_dfs]
@@ -45,34 +45,34 @@ def get_dataframes(glob_path, smooth=False):
 
 
 def main():
+
+    # turn groups of tensorboard log files into dataframes
+    ddpg_data_concat = get_dataframes("./cluster/soccer_fixed_experiment/soccer_random_ddpg/**/events.*")
+    td3_data_concat = get_dataframes("./cluster/soccer_fixed_experiment/soccer_random_td3/**/events.*")
+    sac_data_concat = get_dataframes("./cluster/soccer_fixed_experiment/soccer_random_sac/**/events.*")
+    ppo_data_concat = get_dataframes("./cluster/soccer_fixed_experiment/soccer_random_ppo/**/events.*")
+
+    # setup basic plot figure
     plt.close('all')
-
-    ddpg_data_concat = get_dataframes("./cluster/soccer_task_experiment/soccer_random_ddpg/**/events.*")
-    td3_data_concat = get_dataframes("./cluster/soccer_task_experiment/soccer_random_td3/**/events.*")
-    sac_data_concat = get_dataframes("./cluster/soccer_task_experiment/soccer_random_sac/**/events.*")
-    ppo_data_concat = get_dataframes("./cluster/soccer_task_experiment/soccer_random_ppo/**/events.*")
-
     plt.figure()
     plt.grid(visible=True)
     plt.xlim(0, 5e6)
     if selected_scalar == 'eval/success_rate':
         plt.ylim(0, 1)  # only for success rates
 
-    error = ('se', 2)
-    sns.lineplot(ddpg_data_concat, x='step', y='value', estimator='mean', errorbar=error, label='DDPG')
-    sns.lineplot(td3_data_concat, x='step', y='value', estimator='mean', errorbar=error, label='TD3')
-    sns.lineplot(sac_data_concat, x='step', y='value', estimator='mean', errorbar=error, label='SAC')
-    sns.lineplot(ppo_data_concat, x='step', y='value', estimator='mean', errorbar=error, label='PPO')
+    # draw plots using seaborn
+    plot_kwargs = {'x': 'step', 'y': 'value', 'estimator': 'mean', 'errorbar': ('se', 2)}
+    sns.lineplot(ddpg_data_concat, label='DDPG', **plot_kwargs)
+    sns.lineplot(td3_data_concat, label='TD3', **plot_kwargs)
+    sns.lineplot(sac_data_concat, label='SAC', **plot_kwargs)
+    sns.lineplot(ppo_data_concat, label='PPO', **plot_kwargs)
 
-    # grouped_df = concat_df.groupby(concat_df.index)
-
-    # for df in all_dfs:
-    #     df['value'] = gaussian_filter1d(df['value'], sigma=2)
-    #     sns.lineplot(data=df, x='step', y='value').set_title('TD3: success rate')
-
-    plt.savefig(fname="./plots/soccer_mean_rewards.svg")
-    tpl.clean_figure()
-    tpl.save(filepath="./plots/soccer_mean_rewards.tex")
+    # save plots as svg and tikz
+    save_plots = False
+    if save_plots:
+        plt.savefig(fname="./plots/soccer_success_rates.svg")
+        tpl.clean_figure()
+        tpl.save(filepath="./plots/soccer_success_rates.tex")
 
     plt.show()
 
