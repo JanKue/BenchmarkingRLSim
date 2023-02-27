@@ -1,3 +1,5 @@
+from abc import ABC
+
 import numpy as np
 from alr_sim.core import Scene
 from alr_sim.gyms.gym_controllers import GymTorqueController
@@ -9,7 +11,7 @@ from objects.hammer_objects import HammerObjects
 from gym.spaces import Box
 
 
-class HammerEnv(GymEnvWrapper):
+class HammerEnv(GymEnvWrapper, ABC):
     def __init__(
         self,
         simulator: str = "mujoco",

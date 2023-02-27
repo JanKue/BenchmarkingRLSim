@@ -1,3 +1,5 @@
+from abc import ABC
+
 import numpy as np
 from alr_sim.core import Scene
 from alr_sim.gyms.gym_controllers import GymTorqueController
@@ -11,7 +13,7 @@ from objects.soccer_objects import SoccerObjects
 from gym.spaces import Box
 
 
-class SoccerEnv(GymEnvWrapper):
+class SoccerEnv(GymEnvWrapper, ABC):
     def __init__(
             self,
             simulator: str = "mujoco",
@@ -78,11 +80,11 @@ class SoccerEnv(GymEnvWrapper):
         ball_pos = self.scene.get_obj_pos(self.soccer_ball)
 
         if self.goal_box.contains(ball_pos):
+            self.terminated = True
             return 0
 
         self.robot.receiveState()
         tcp_pos = self.robot.current_c_pos
-        tcp_quat = self.robot.current_c_quat
 
         goal_center_pos = self.scene.sim.data.get_body_xpos("soccer_goal")
         tcp_ball_dist, _ = obj_distance(tcp_pos, ball_pos)

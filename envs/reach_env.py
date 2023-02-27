@@ -1,3 +1,5 @@
+from abc import ABC
+
 import numpy as np
 from gym.spaces import Box as SamplingSpace
 from alr_sim.gyms.gym_env_wrapper import GymEnvWrapper
@@ -8,7 +10,7 @@ from alr_sim.sims.SimFactory import SimRepository
 from alr_sim.core.Scene import Scene
 
 
-class ReachEnv(GymEnvWrapper):
+class ReachEnv(GymEnvWrapper, ABC):
     def __init__(
         self,
         simulator: str = "mujoco",

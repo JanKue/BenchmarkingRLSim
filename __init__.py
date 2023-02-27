@@ -88,8 +88,7 @@ register(
     max_episode_steps=625,
     kwargs={"render": True,
             "reward_multiplier": 25,
-            "reward_hand_penalty_ratio": 30,
-            "reward_hinge_exp": True}
+            "reward_hand_penalty_ratio": 30}
 )
 
 register(
@@ -98,8 +97,7 @@ register(
     max_episode_steps=625,
     kwargs={"render": False,
             "reward_multiplier": 25,
-            "reward_hand_penalty_ratio": 30,
-            "reward_hinge_exp": True}
+            "reward_hand_penalty_ratio": 30}
 )
 
 register(

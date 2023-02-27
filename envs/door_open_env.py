@@ -1,3 +1,5 @@
+from abc import ABC
+
 import numpy as np
 from alr_sim.core import Scene
 from alr_sim.gyms.gym_controllers import GymTorqueController
@@ -9,7 +11,7 @@ from objects.door_objects import DoorObjects
 from gym.spaces import Box
 
 
-class DoorOpenEnv(GymEnvWrapper):
+class DoorOpenEnv(GymEnvWrapper, ABC):
     def __init__(
         self,
         simulator: str = "mujoco",
@@ -20,7 +22,6 @@ class DoorOpenEnv(GymEnvWrapper):
         render=False,
         reward_multiplier: int = 25,
         reward_hand_penalty_ratio: int = 4,
-        reward_hinge_exp: bool = True,
         reward_hinge_linear: int = 10,
     ):
         sim_factory = SimRepository.get_factory(simulator)
@@ -50,7 +51,6 @@ class DoorOpenEnv(GymEnvWrapper):
 
         self.reward_multiplier = reward_multiplier
         self.reward_hand_penalty_ratio = reward_hand_penalty_ratio
-        self.reward_hinge_exp = reward_hinge_exp
         self.reward_hinge_linear = reward_hinge_linear
 
         self.start()
@@ -76,7 +76,6 @@ class DoorOpenEnv(GymEnvWrapper):
     def get_reward(self):
         self.robot.receiveState()
         tcp_pos = self.robot.current_c_pos
-        tcp_quat = self.robot.current_c_quat
 
         # guide the end effector to a box between handle and door
         hand_target_pos = self.scene.sim.data.get_geom_xpos("hand_target")
@@ -88,14 +87,12 @@ class DoorOpenEnv(GymEnvWrapper):
         # calculate door opening angle and compare to target value
         hinge_pos = self.scene.sim.data.get_joint_qpos("doorjoint")
         hinge_difference = hinge_pos - self.hinge_goal
-        exp_hinge_diff = np.exp(hinge_difference) - 1.0
+        hinge_component = np.exp(hinge_difference) - 1.0
 
         # keep robot end-effector upright by keeping W and Z close to 0
         # w_error = (np.exp(abs(tcp_quat[0])) - 1) ** 2
         # z_error = (np.exp(abs(tcp_quat[3])) - 1) ** 2
         # orientation_error = np.minimum(w_error + z_error, 10)
-
-        hinge_component = exp_hinge_diff if self.reward_hinge_exp else self.reward_hinge_linear * hinge_difference
 
         reward = - self.reward_multiplier * (hinge_component + self.reward_hand_penalty_ratio * hand_target_penalty)
 
