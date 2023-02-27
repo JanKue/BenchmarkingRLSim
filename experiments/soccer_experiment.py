@@ -3,7 +3,7 @@ import time
 from cw2 import experiment, cw_error, cluster_work
 from cw2.cw_data import cw_logging
 
-from training import training_soccer_env
+from training import training
 
 
 class SoccerExperiment(experiment.AbstractExperiment):
@@ -20,8 +20,8 @@ class SoccerExperiment(experiment.AbstractExperiment):
         add_delay = add_delays[params['algorithm']]
         time.sleep((rep + add_delay) * 30)
 
-        training_soccer_env.main(env_name=params['env_name'], path=rep_path, total_steps=params['total_steps'],
-                                 seed=rep, algorithm=params['algorithm'])
+        training.main(env_name=params['env_name'], path=rep_path, total_steps=params['total_steps'],
+                      algorithm=params['algorithm'], seed=rep, sac_action_noise=True)
 
         return
 

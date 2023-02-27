@@ -3,7 +3,7 @@ import time
 from cw2 import experiment, cw_error, cluster_work
 from cw2.cw_data import cw_logging
 
-from training import training_reach
+from training import training
 
 
 class ReachExperiment(experiment.AbstractExperiment):
@@ -18,8 +18,8 @@ class ReachExperiment(experiment.AbstractExperiment):
 
         time.sleep(rep * 30)
 
-        training_reach.main(env_name=params['env_name'], path=rep_path, algorithm=params['algorithm'],
-                            total_steps=params['total_steps'], seed=rep)
+        training.main(env_name=params['env_name'], path=rep_path, total_steps=params['total_steps'],
+                      algorithm=params['algorithm'], seed=rep, sac_action_noise=False)
 
         return
 
