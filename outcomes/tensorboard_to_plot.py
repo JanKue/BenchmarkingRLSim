@@ -47,10 +47,10 @@ def get_dataframes(glob_path, smooth=False):
 def main():
 
     # turn groups of tensorboard log files into dataframes
-    ddpg_data_concat = get_dataframes("./cluster/soccer_fixed_experiment/soccer_random_ddpg/**/events.*")
-    td3_data_concat = get_dataframes("./cluster/soccer_fixed_experiment/soccer_random_td3/**/events.*")
-    sac_data_concat = get_dataframes("./cluster/soccer_fixed_experiment/soccer_random_sac/**/events.*")
-    ppo_data_concat = get_dataframes("./cluster/soccer_fixed_experiment/soccer_random_ppo/**/events.*")
+    ddpg_data_concat = get_dataframes("./cluster/reach_task_random/reach_random_init_ddpg/**/events.*")
+    td3_data_concat = get_dataframes("./cluster/reach_task_random/reach_random_init_td3/**/events.*")
+    sac_data_concat = get_dataframes("./cluster/reach_task_random/reach_random_init_sac/**/events.*")
+    ppo_data_concat = get_dataframes("./cluster/reach_task_random/reach_random_init_ppo/**/events.*")
 
     # setup basic plot figure
     plt.close('all')
@@ -68,11 +68,11 @@ def main():
     sns.lineplot(ppo_data_concat, label='PPO', **plot_kwargs)
 
     # save plots as svg and tikz
-    save_plots = False
+    save_plots = True
     if save_plots:
-        plt.savefig(fname="./plots/soccer_success_rates.svg")
+        plt.savefig(fname="./plots/reach_success_rates.svg")
         tpl.clean_figure()
-        tpl.save(filepath="./plots/soccer_success_rates.tex")
+        tpl.save(filepath="./plots/reach_success_rates.tex")
 
     plt.show()
 
