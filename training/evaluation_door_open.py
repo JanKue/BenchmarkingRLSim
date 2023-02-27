@@ -9,7 +9,7 @@ def main():
     # create scene and environment
 
     env = gym.make("DoorOpenEnv-v2")
-    file_path = "../outcomes/cluster/door_open_task/door_open_sac_reward_tuning/door_open_sac_reward_tuning__ev21/evaluation/best_model.zip"
+    file_path = "../outcomes/local/models/sac_open_door.zip"
 
     # load trained model and run it
 

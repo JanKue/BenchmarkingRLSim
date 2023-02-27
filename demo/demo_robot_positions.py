@@ -1,5 +1,4 @@
 import numpy as np
-from alr_sim.core import RobotPlotFlags, RobotLogger
 from alr_sim.sims.SimFactory import SimRepository
 from gym.spaces import Box
 

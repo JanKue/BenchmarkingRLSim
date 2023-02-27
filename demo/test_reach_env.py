@@ -1,8 +1,3 @@
-from alr_sim.gyms.gym_controllers import GymCartesianVelController, GymTorqueController
-from alr_sim.sims.SimFactory import SimRepository
-
-from alr_sim.core.logger import RobotPlotFlags
-
 import gym.spaces
 
 import __init__
