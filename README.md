@@ -2,8 +2,6 @@
 
 Bachelor's thesis by Jan Küblbeck
 
-[Link to GitHub](https://github.com/JanKue/BenchmarkingRLSim)
-
 ### Guide
 
 #### Installation:
@@ -17,9 +15,12 @@ Bachelor's thesis by Jan Küblbeck
 
 #### Repo Structure
 
+* `custom_envs`: implementations of environments
 * `demo`: demo and testing of code
-* `envs`: implementations of environments
 * `experiments`: cw2 experiments and config files for BwUniCluster
 * `objects`: code for required object assets
 * `outcomes`: results are to be saved here
 * `training`: code for training and testing models
+* `pdfs`: thesis and related PDFs
+
+[This repo on GitHub](https://github.com/JanKue/BenchmarkingRLSim)
