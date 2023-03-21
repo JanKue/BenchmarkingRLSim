@@ -69,8 +69,9 @@ register(
     entry_point="custom_envs.door_open_env:DoorOpenEnv",
     max_episode_steps=625,
     kwargs={"n_substeps": 10,
-            "random_init": False,
-            "render": True}
+            "render": True,
+            "reward_multiplier": 25,
+            "reward_hand_penalty_ratio": 30}
 )
 
 register(
@@ -78,24 +79,7 @@ register(
     entry_point="custom_envs.door_open_env:DoorOpenEnv",
     max_episode_steps=625,
     kwargs={"n_substeps": 10,
-            "random_init": False,
-            "render": False}
-)
-
-register(
-    id="DoorOpenEnv-v2",
-    entry_point="custom_envs.door_open_env:DoorOpenEnv",
-    max_episode_steps=625,
-    kwargs={"render": True,
-            "reward_multiplier": 25,
-            "reward_hand_penalty_ratio": 30}
-)
-
-register(
-    id="DoorOpenEnv-v3",
-    entry_point="custom_envs.door_open_env:DoorOpenEnv",
-    max_episode_steps=625,
-    kwargs={"render": False,
+            "render": False,
             "reward_multiplier": 25,
             "reward_hand_penalty_ratio": 30}
 )

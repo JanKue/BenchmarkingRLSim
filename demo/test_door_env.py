@@ -5,12 +5,15 @@ import gym.spaces
 
 def main():
 
-    env = gym.make("DoorOpenEnv-v1")
-
+    env = gym.make("DoorOpenEnv-v0")
     ctrl = env.controller
 
-    env.reset()
+    step_done = False
     for i in range(10_000):
+        if step_done or i % 250 == 0:
+            print("reset!")
+            env.reset()
+
         action = ctrl.action_space().sample()
         # print("action:", action)
         step_obs, step_reward, step_done, _ = env.step(action)
@@ -18,10 +21,6 @@ def main():
         print("Latest step reward:", step_reward)
         # print("observation: ", step_obs)
         # print("valid observation: ", env.observation_space.contains(step_obs))
-
-        if step_done or (i + 1) % 250 == 0:
-            print("reset!")
-            env.reset()
 
 
 if __name__ == "__main__":

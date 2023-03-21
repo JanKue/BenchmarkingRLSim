@@ -47,5 +47,5 @@ def main(env_name: str, path: str, total_steps: int, algorithm: str, seed: int =
 
 
 if __name__ == "__main__":
-    main(env_name="DoorOpenEnv-v3", path="../outcomes/local/door_open/ddpg", total_steps=2_500_000, algorithm='SAC',
+    main(env_name="DoorOpenEnv-v1", path="../outcomes/local/door_open/ddpg", total_steps=2_500_000, algorithm='SAC',
          sac_action_noise=True)

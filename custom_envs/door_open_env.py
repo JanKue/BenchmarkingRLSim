@@ -12,19 +12,25 @@ from gym.spaces import Box
 
 
 class DoorOpenEnv(GymEnvWrapper, ABC):
+    """
+    Implementation of door opening environment based on Meta-World.
+
+    Args:
+        render (bool): whether to set the render mode to HUMAN or BLIND
+        reward_multiplier (int): weight for the reward function
+        reward_hand_penalty_ratio (int): weight for the reward function
+    """
+
     def __init__(
         self,
-        simulator: str = "mujoco",
         n_substeps: int = 10,
         max_steps_per_episode: int = 625,
         debug: bool = True,
-        random_init: bool = False,
-        render=False,
+        render: bool = False,
         reward_multiplier: int = 25,
-        reward_hand_penalty_ratio: int = 4,
-        reward_hinge_linear: int = 10,
+        reward_hand_penalty_ratio: int = 30
     ):
-        sim_factory = SimRepository.get_factory(simulator)
+        sim_factory = SimRepository.get_factory("mujoco")
         render_mode = Scene.RenderMode.HUMAN if render else Scene.RenderMode.BLIND
         scene = sim_factory.create_scene(render=render_mode)
         robot = sim_factory.create_robot(scene)
@@ -51,7 +57,6 @@ class DoorOpenEnv(GymEnvWrapper, ABC):
 
         self.reward_multiplier = reward_multiplier
         self.reward_hand_penalty_ratio = reward_hand_penalty_ratio
-        self.reward_hinge_linear = reward_hinge_linear
 
         self.start()
 
@@ -88,11 +93,6 @@ class DoorOpenEnv(GymEnvWrapper, ABC):
         hinge_pos = self.scene.sim.data.get_joint_qpos("doorjoint")
         hinge_difference = hinge_pos - self.hinge_goal
         hinge_component = np.exp(hinge_difference) - 1.0
-
-        # keep robot end-effector upright by keeping W and Z close to 0
-        # w_error = (np.exp(abs(tcp_quat[0])) - 1) ** 2
-        # z_error = (np.exp(abs(tcp_quat[3])) - 1) ** 2
-        # orientation_error = np.minimum(w_error + z_error, 10)
 
         reward = - self.reward_multiplier * (hinge_component + self.reward_hand_penalty_ratio * hand_target_penalty)
 
