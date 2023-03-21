@@ -7,7 +7,7 @@ import tikzplotlib as tpl
 from scipy.ndimage import gaussian_filter1d
 
 
-selected_scalar = 'eval/success_rate'
+selected_scalar = 'eval/mean_reward'
 
 
 def parse_tensorboard(filepath):
@@ -47,10 +47,10 @@ def get_dataframes(glob_path, smooth=False):
 def main():
 
     # turn groups of tensorboard log files into dataframes
-    ddpg_data_concat = get_dataframes("./cluster/reach_task_random/reach_random_init_ddpg/**/events.*")
-    td3_data_concat = get_dataframes("./cluster/reach_task_random/reach_random_init_td3/**/events.*")
-    sac_data_concat = get_dataframes("./cluster/reach_task_random/reach_random_init_sac/**/events.*")
-    ppo_data_concat = get_dataframes("./cluster/reach_task_random/reach_random_init_ppo/**/events.*")
+    ddpg_data_concat = get_dataframes("./cluster/soccer_fixed_experiment/soccer_random_ddpg/**/events.*")
+    td3_data_concat = get_dataframes("./cluster/soccer_fixed_experiment/soccer_random_td3/**/events.*")
+    sac_data_concat = get_dataframes("./cluster/soccer_fixed_experiment/soccer_random_sac/**/events.*")
+    ppo_data_concat = get_dataframes("./cluster/soccer_fixed_experiment/soccer_random_ppo/**/events.*")
 
     # setup basic plot figure
     plt.close('all')
@@ -58,10 +58,13 @@ def main():
     plt.grid(visible=True)
     plt.xlim(0, 5e6)
     if selected_scalar == 'eval/success_rate':
-        plt.ylim(0, 1)  # only for success rates
+        plt.ylim(0, 0.2)  # only for success rates
+        plt.ylabel('success rate')
+    else:
+        plt.ylabel('episodic reward')
 
     # draw plots using seaborn
-    plot_kwargs = {'x': 'step', 'y': 'value', 'estimator': 'mean', 'errorbar': ('se', 2)}
+    plot_kwargs = {'x': 'step', 'y': 'value', 'estimator': 'mean', 'errorbar': ('se', 2), 'dashes': True}
     sns.lineplot(ddpg_data_concat, label='DDPG', **plot_kwargs)
     sns.lineplot(td3_data_concat, label='TD3', **plot_kwargs)
     sns.lineplot(sac_data_concat, label='SAC', **plot_kwargs)
@@ -70,9 +73,9 @@ def main():
     # save plots as svg and tikz
     save_plots = True
     if save_plots:
-        plt.savefig(fname="./plots/reach_success_rates.svg")
-        tpl.clean_figure()
-        tpl.save(filepath="./plots/reach_success_rates.tex")
+        plt.savefig(fname="./plots/soccer_mean_rewards.svg")
+        # tpl.clean_figure()
+        # tpl.save(filepath="./plots/reach_success_rates.tex")
 
     plt.show()
 
