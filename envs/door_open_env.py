@@ -6,7 +6,7 @@ from alr_sim.gyms.gym_controllers import GymTorqueController
 from alr_sim.gyms.gym_env_wrapper import GymEnvWrapper
 from alr_sim.sims.SimFactory import SimRepository
 
-from objects.door_objects import DoorObjects
+from objects.door_objects import DoorBox
 
 from gym.spaces import Box
 
@@ -38,7 +38,7 @@ class DoorOpenEnv(GymEnvWrapper, ABC):
             debug=debug,
         )
 
-        door_objects = DoorObjects(name="door_objects")
+        door_objects = DoorBox(name="door_objects")
         scene.add_object(door_objects)
 
         self.hinge_goal = -np.pi/2

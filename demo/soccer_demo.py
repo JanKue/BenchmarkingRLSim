@@ -1,6 +1,6 @@
 from alr_sim.sims.SimFactory import SimRepository
 import alr_sim.sims.universal_sim.PrimitiveObjects as PrimObj
-from objects.soccer_objects import SoccerObjects
+from objects.soccer_objects import SoccerGoal
 
 from gym.spaces.box import Box
 
@@ -56,7 +56,7 @@ if __name__ == '__main__':
 
     goal_box = Box(low=np.array([0.3, 0.44, 0.01]), high=np.array([0.5, 0.54, 0.13]))
 
-    soccer_objects = SoccerObjects(name="soccer-objects")
+    soccer_objects = SoccerGoal(name="soccer-objects")
 
     # goal line: y = 0.44, back: y = 0.54
     # posts: x = 0.3, 0.5

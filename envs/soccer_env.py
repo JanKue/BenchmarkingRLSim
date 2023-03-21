@@ -8,7 +8,7 @@ from alr_sim.gyms.gym_utils.helpers import obj_distance
 from alr_sim.sims.SimFactory import SimRepository
 from alr_sim.sims.universal_sim.PrimitiveObjects import Sphere
 
-from objects.soccer_objects import SoccerObjects
+from objects.soccer_objects import SoccerGoal
 
 from gym.spaces import Box
 
@@ -45,7 +45,7 @@ class SoccerEnv(GymEnvWrapper, ABC):
                              size=[0.026], mass=0.04)
         self.scene.add_object(self.soccer_ball)
 
-        self.soccer_goal_object = SoccerObjects(name="soccer_goal_object")
+        self.soccer_goal_object = SoccerGoal(name="soccer_goal_object")
         self.scene.add_object(self.soccer_goal_object)
 
         self.random_init = random_init

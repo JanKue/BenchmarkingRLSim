@@ -1,7 +1,7 @@
 import numpy as np
 from alr_sim.sims.SimFactory import SimRepository
 import alr_sim.sims.universal_sim.PrimitiveObjects as PrimObj
-from objects.door_objects import DoorObjects
+from objects.door_objects import DoorBox
 
 if __name__ == '__main__':
 
@@ -18,7 +18,7 @@ if __name__ == '__main__':
         visual_only=True
     )
 
-    door_objects = DoorObjects(name="safe-and-door")
+    door_objects = DoorBox(name="safe-and-door")
     object_list = [door_objects, cylinder]
 
     sim_factory = SimRepository.get_factory("mujoco")

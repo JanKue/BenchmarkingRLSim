@@ -1,7 +1,4 @@
 <mujocoinclude>
-<!--
-    <compiler angle="radian" inertiafromgeom="auto" inertiagrouprange="4 5"/>
--->
     <asset>
       <material name="soccer_col" rgba="0.3 0.3 1.0 0.5" shininess="0" specular="0"/>
       <material name="soccer_blue" rgba="0 .4 .6 1" shininess="1" reflectance=".7" specular=".5"/>
@@ -14,9 +11,9 @@
         <mesh file="../../../objects/meshes/soccer/goal_col2.stl" name="goal_col2"/>
         <mesh file="../../../objects/meshes/soccer/goal_col3.stl" name="goal_col3"/>
         <mesh file="../../../objects/meshes/soccer/goal_col4.stl" name="goal_col4"/>
+        <mesh file="../../../objects/meshes/soccer/soccer_black.stl" name="soccer_black"/>
         <mesh file="../../../objects/meshes/soccer/soccer_frame.stl" name="soccer_frame"/>
         <mesh file="../../../objects/meshes/soccer/soccer_net.stl" name="soccer_net"/>
-        <mesh file="../../../objects/meshes/soccer/soccer_black.stl" name="soccer_black"/>
         <mesh file="../../../objects/meshes/soccer/soccer_white.stl" name="soccer_white"/>
     </asset>
     
@@ -35,16 +32,7 @@
     </default>
     
     <worldbody>
-    
-    <!---
-      <body childclass="soccer_base" name="soccer_ball" pos="0.4 -0.1 0">
-        <freejoint />
-        <geom material="soccer_white" mesh="soccer_white"/>
-        <geom material="soccer_black" mesh="soccer_black"/>
-        <geom class="soccer_col" type="sphere" size=".026" mass=".04"/>
-      </body>
-    --->
-        
+      
       <body childclass="soccer_base" name="soccer_goal" pos="0.4 0.5 -0.02">
         <geom material="soccer_white" mesh="soccer_frame"/>
         <geom material="soccer_blue" mesh="soccer_net"/>
