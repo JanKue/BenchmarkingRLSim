@@ -1,3 +1,4 @@
+import os
 from abc import ABC
 
 from alr_sim.core.sim_object.sim_object import SimObject
@@ -6,17 +7,16 @@ from alr_sim.sims.mujoco.MujocoLoadable import MujocoXmlLoadable
 
 class HammerObjects(SimObject, MujocoXmlLoadable, ABC):
 
-    def __init__(self,
-                 name: str,
-                 init_pos=[0.0, 0.0, 0.0],
-                 init_quat=[0.0, 0.0, 0.0, 0.0]):
-        super(HammerObjects, self).__init__(name, init_pos, init_quat)
+    def __init__(self, name: str):
+        super(HammerObjects, self).__init__(name)
 
-        path_to_alr_sim_framework = "/home/jan/SimulationFramework"
-        self.xml_file_path = path_to_alr_sim_framework + "/models/mujoco/objects/hammer_objects.xml"
+    @staticmethod
+    def _file_path():
+        return os.path.dirname(os.path.abspath(__file__))
 
+    @property
     def xml_file_path(self):
-        return self.xml_file_path
+        return self._file_path() + "/assets/hammer_objects.xml"
 
     def get_poi(self) -> list:
         return [self.name]
