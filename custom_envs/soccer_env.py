@@ -14,17 +14,29 @@ from gym.spaces import Box
 
 
 class SoccerEnv(GymEnvWrapper, ABC):
+    """
+    Implementation of soccer environment based on Meta-World with support for randomizing ball position.
+
+    Args:
+        random_ball_pos (bool): toggle random sampling of ball's starting position
+        render (bool): whether to set the render mode to HUMAN or BLIND
+        reward_dist_weight (int): reward function hyperparameter
+        reward_touching_weight (int): reward function hyperparameter
+        reward_behind_goal (int): reward function hyperparameter
+    """
+
     def __init__(
             self,
-            simulator: str = "mujoco",
             n_substeps: int = 10,
             max_steps_per_episode: int = 625,
             debug: bool = True,
-            random_init: bool = False,
             random_ball_pos: bool = False,
-            render=False
+            render: bool = False,
+            reward_dist_weight: int = 50,
+            reward_touching_weight: int = 15,
+            reward_behind_goal: int = 50
     ):
-        sim_factory = SimRepository.get_factory(simulator)
+        sim_factory = SimRepository.get_factory("mujoco")
         render_mode = Scene.RenderMode.HUMAN if render else Scene.RenderMode.BLIND
         scene = sim_factory.create_scene(render=render_mode)
         robot = sim_factory.create_robot(scene)
@@ -48,7 +60,6 @@ class SoccerEnv(GymEnvWrapper, ABC):
         self.soccer_goal_object = SoccerGoal(name="soccer_goal_object")
         self.scene.add_object(self.soccer_goal_object)
 
-        self.random_init = random_init
         self.observation_space = Box(low=-np.inf, high=np.inf, shape=(50,), dtype=np.float64)
         self.action_space = self.controller.action_space()
         self.reward_range = (-np.inf, 0)
@@ -56,6 +67,10 @@ class SoccerEnv(GymEnvWrapper, ABC):
         self.goal_bounds_min = np.array([0.3, 0.44, -0.02])
         self.goal_bounds_max = np.array([0.5, 0.54, 0.13])
         self.goal_box = Box(low=np.array([0.3, 0.44, -0.02]), high=np.array([0.5, 0.54, 0.13]), dtype=np.float64)
+
+        self.reward_dist_weight = reward_dist_weight
+        self.reward_touching_weight = reward_touching_weight
+        self.reward_behind_goal = reward_behind_goal
 
         self.start()
 
@@ -76,9 +91,8 @@ class SoccerEnv(GymEnvWrapper, ABC):
 
     def get_reward(self):
 
-        # first: check if ball is in goal
+        # first: check if ball is in goal -> terminate immediately with max reward
         ball_pos = self.scene.get_obj_pos(self.soccer_ball)
-
         if self.goal_box.contains(ball_pos):
             self.terminated = True
             return 0
@@ -90,25 +104,22 @@ class SoccerEnv(GymEnvWrapper, ABC):
         tcp_ball_dist, _ = obj_distance(tcp_pos, ball_pos)
         ball_goal_dist, _ = obj_distance(ball_pos, goal_center_pos)
 
-        ball_touching_penalty = 15 * tcp_ball_dist if tcp_ball_dist > 0.1 else 0
-        behind_goal_penalty = 50 if ball_pos[1] > 0.44 else 0
+        ball_touching_penalty = self.reward_touching_weight * tcp_ball_dist if tcp_ball_dist > 0.1 else 0
+        behind_goal_penalty = self.reward_behind_goal if ball_pos[1] > 0.44 else 0
 
-        reward = - 50 * ball_goal_dist - ball_touching_penalty - behind_goal_penalty
+        reward = - self.reward_dist_weight * ball_goal_dist - ball_touching_penalty - behind_goal_penalty
 
         return np.minimum(reward, 0)
 
     def _check_early_termination(self) -> bool:
-
         ball_pos = self.scene.get_obj_pos(self.soccer_ball)
-
         if self.goal_box.contains(ball_pos):
             self.terminated = True
             return True
-
-        return False
+        else:
+            return False
 
     def _reset_env(self):
-
         if self.random_ball_pos:
             new_ball = [self.soccer_ball, self.ball_pos_space.sample()]
             self.scene.reset([new_ball])

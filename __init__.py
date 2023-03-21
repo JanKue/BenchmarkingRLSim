@@ -107,7 +107,6 @@ register(
     entry_point="custom_envs.soccer_env:SoccerEnv",
     max_episode_steps=500,
     kwargs={"n_substeps": 10,
-            "random_init": False,
             "render": True,
             "random_ball_pos": False}
 )
@@ -117,7 +116,6 @@ register(
     entry_point="custom_envs.soccer_env:SoccerEnv",
     max_episode_steps=500,
     kwargs={"n_substeps": 10,
-            "random_init": False,
             "render": False,
             "random_ball_pos": False}
 )
@@ -127,7 +125,6 @@ register(
     entry_point="custom_envs.soccer_env:SoccerEnv",
     max_episode_steps=500,
     kwargs={"n_substeps": 10,
-            "random_init": False,
             "render": True,
             "random_ball_pos": True}
 )
@@ -137,7 +134,6 @@ register(
     entry_point="custom_envs.soccer_env:SoccerEnv",
     max_episode_steps=500,
     kwargs={"n_substeps": 10,
-            "random_init": False,
             "render": False,
             "random_ball_pos": True}
 )
