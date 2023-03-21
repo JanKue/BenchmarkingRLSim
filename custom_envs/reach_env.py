@@ -110,6 +110,13 @@ class ReachEnv(GymEnvWrapper, ABC):
         else:
             self.scene.reset()
 
+    def reset(self):
+        self.terminated = False
+        self.env_step_counter = 0
+        self.episode += 1
+        self._reset_env()
+        return self.get_observation()
+
     def debug_msg(self) -> dict:
         goal_pos = self.scene.get_obj_pos(self.goal)
         tcp_pos = self.robot.current_c_pos
