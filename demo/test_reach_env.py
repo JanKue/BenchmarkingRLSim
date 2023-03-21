@@ -10,8 +10,6 @@ def main():
     robot = env.robot
     ctrl = env.controller
 
-    env.start()
-
     scene.start_logging()
     env.reset()
     for i in range(200):

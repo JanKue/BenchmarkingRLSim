@@ -11,9 +11,17 @@ from alr_sim.core.Scene import Scene
 
 
 class ReachEnv(GymEnvWrapper, ABC):
+    """
+    Implementation of reaching environment with support for randomizing initial robot position and goal position.
+
+    Args:
+        random_goal (bool): toggle random sampling of goal
+        random_init (bool): toggle random initial position
+        render (bool): whether to set the render mode to HUMAN or BLIND
+    """
+
     def __init__(
         self,
-        simulator: str = "mujoco",
         n_substeps: int = 10,
         max_steps_per_episode: int = 250,
         debug: bool = True,
@@ -21,7 +29,7 @@ class ReachEnv(GymEnvWrapper, ABC):
         random_init: bool = False,
         render=False
     ):
-        sim_factory = SimRepository.get_factory(simulator)
+        sim_factory = SimRepository.get_factory("mujoco")
         render_mode = Scene.RenderMode.HUMAN if render else Scene.RenderMode.BLIND
         scene = sim_factory.create_scene(render=render_mode)
         robot = sim_factory.create_robot(scene)
@@ -53,8 +61,8 @@ class ReachEnv(GymEnvWrapper, ABC):
         self.target_min_dist = 0.025
 
         self.random_init = random_init
-        variance = np.array([0.05, 0.05, 0.05, 0.05, 0.025, 0.025, 0.025, 0, 0])
-        self.variance_space = SamplingSpace(low=-variance, high=variance)
+        init_range = np.array([0.05, 0.05, 0.05, 0.05, 0.025, 0.025, 0.025, 0, 0])
+        self.init_space = SamplingSpace(low=-init_range, high=init_range)
 
         self.observation_space = SamplingSpace(low=-np.inf, high=np.inf, shape=(34,), dtype=np.float64)
         self.action_space = self.controller.action_space()
@@ -94,20 +102,13 @@ class ReachEnv(GymEnvWrapper, ABC):
 
     def _reset_env(self):
         if self.random_init:
-            self.scene.init_qpos = self.orig_init_qpos + self.variance_space.sample()
+            self.scene.init_qpos = self.orig_init_qpos + self.init_space.sample()
 
         if self.random_goal:
             new_goal = [self.goal, self.goal_space.sample()]
             self.scene.reset([new_goal])
         else:
             self.scene.reset()
-
-    def reset(self):
-        self.terminated = False
-        self.env_step_counter = 0
-        self.episode += 1
-        self._reset_env()
-        return self.get_observation()
 
     def debug_msg(self) -> dict:
         goal_pos = self.scene.get_obj_pos(self.goal)
